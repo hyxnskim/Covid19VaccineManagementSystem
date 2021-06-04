@@ -22,10 +22,13 @@ public class MemberService {
 	
 	/** 기본생성자 : 초기화 회원 등록 수행 */
 	public MemberService() {
-		System.out.println("초기화회원 등록작업이 완료되었습니다 : " + initMember());
+		System.out.println("초기 회원 등록작업이 완료되었습니다 : " + initMember());
 	}
 	
-	/** 현재 등록자수 조회
+	/** 
+	 * <pre>
+	 * 현재 등록자수 조회
+	 * </pre>
 	 * @return 현재 등록자수
 	 */
 	public int getCount() {
@@ -33,7 +36,9 @@ public class MemberService {
 	}
 	
 	/**
+	 * <pre>
 	 * 회원 중복 체크
+	 * </pre>
 	 * @param regiNum 주민등록번호
 	 * @return 존재시에 저장위치 번호, 존재하지 않으면 -1
 	 */
@@ -48,7 +53,9 @@ public class MemberService {
 	
 	
 	/**
+	 * <pre>
 	 * 테스트를 위한 회원 초기화 등록 메서드
+	 * </pre>
 	 * @return 초기화 회원등록 인원수
 	 */
 	public int initMember() {
@@ -66,6 +73,7 @@ public class MemberService {
 		
 		return getCount();
 	}
+	
 	/**
 	 * <pre>
 	 * 회원 등록 메서드
