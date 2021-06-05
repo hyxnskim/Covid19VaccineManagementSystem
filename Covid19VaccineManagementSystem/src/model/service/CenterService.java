@@ -38,6 +38,14 @@ public class CenterService {
 	public CenterService() {
 		System.out.println("초기 센터 등록작업이 완료되었습니다");
 		readFile();
+		for(int i = 0 ; i < districts.size(); i++ ) {
+			System.out.println(districts.get(i));
+		}
+	}
+	
+	
+	public ArrayList<String> getDistricts(){
+		return districts;
 	}
 	
 	/** 
@@ -95,6 +103,7 @@ public class CenterService {
 				if(temp.length > 5) {
 					contact = temp[5];
 				}
+				tempArrayList.add(temp[3]);
 				Center dto = new Center(temp[0], temp[1], temp[2], temp[3], temp[4], contact);
 				if(exist(dto) == -1) cenList.add(dto);				
 				//////////////////////////////////////////////////////////////////////////////////
