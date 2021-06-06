@@ -138,6 +138,7 @@ public class MemberService {
 				dto.setDateSecond(date);
 				dto.setNotiDate(addDate(date, 3));
 				memList.add(dto);
+				System.out.println("등록이 완료되었습니다.");
 			} else {
 				System.out.println("[오류] 입력한 백신 이름이 올바르지 않습니다");
 			}
@@ -209,7 +210,19 @@ public class MemberService {
 			}
 		
 		}
-		System.out.print("1차 접종일 (형식 : 20210605) : "); dto.setDateFirst(sc.next()); // 검증 메서드 추가해야함
+		
+		close = false;
+		while(!close) {
+			System.out.print("1차 접종일 (형식 : 20210605) : ");
+			tmp = sc.next();
+			try {
+				Integer.parseInt(tmp);
+				dto.setDateFirst(sc.next()); 
+				close = true;
+			}catch (Exception e) {
+				System.out.println("[오류]입력 형식을 확인해주세요.");
+			}
+		}
 		
 		addMember(dto);
 	}
