@@ -52,12 +52,15 @@ public class mainMenu {
 				try {
 					sm.printCurrentVac();
 				} catch (ParseException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 				break;
 			case 2:
-						
+				try {
+					sm.verifyPrior();
+				} catch (ParseException e) {
+					e.printStackTrace();
+				}		
 				break;
 			case 3:
 				

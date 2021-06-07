@@ -5,11 +5,10 @@ package view;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
-import java.util.Locale;
 import java.util.Scanner;
 
+import model.service.MemberService;
 import model.service.Service;
 import util.UI;
 
@@ -43,6 +42,7 @@ public class subMenu {
 				ui.printSubSubMenu("오늘 현환 조회");
 				service.inocNumToday(new SimpleDateFormat("yyyy-MM-dd").format(new Date()));
 				break;
+				
 			case 2:
 				int sdate, edate;
 				ui.printSubSubMenu("날짜별 검색");
@@ -60,14 +60,47 @@ public class subMenu {
 					service.inocNumToday(new SimpleDateFormat("yyyy-MM-dd").format(dt));
 				}
 				break;
+				
 			case 0:
 				System.out.println("메인 메뉴로 돌아갑니다.");
 				return;
+				
 			 default:
 				 System.out.println("0~2 사이의 숫자를 입력하세요.");
 			}
 		}
 	}
 	
-
+	public void verifyPrior() throws ParseException {
+		Service service = new Service();
+		Scanner sc = new Scanner(System.in);
+		String yn;
+		
+		ui.printSubMenu("우선접종 대상자 여부 확인");
+		
+		if(!service.isPrior()) {
+			System.out.println("우선접종 대상자가 아닙니다.\n메인 메뉴로 되돌아갑니다.");
+			return;
+		}
+		
+		System.out.println("우선접종 대상자입니다.");
+		
+		while(true) {
+			System.out.println("2차 접종에 대한 알림을 재공하는 서비스에 가입하시겠습니까?(Y/N) : "); yn = sc.next();
+			if(yn.equals("Y")) {
+				MemberService ms = new MemberService();
+				if(ms.addMember()) {
+					System.out.println("등록되었습니다.");
+				};
+				return;
+			} else if(yn.equals("N")) {
+				System.out.println("메인 메뉴로 되돌아갑니다.");
+				return;
+			} else {
+				System.out.println("[오류] 입력 형식을 확인해주세요");
+			}
+		}
+	}
+	
+	
 }

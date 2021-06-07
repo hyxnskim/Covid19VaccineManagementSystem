@@ -38,7 +38,7 @@ public class MemberService {
 	 * @throws ParseException 
 	 */
 	public MemberService() throws ParseException {
-		System.out.println("초기 회원 등록작업이 완료되었습니다 : " + initMember());
+		//System.out.println("초기 회원 등록작업이 완료되었습니다 : " + initMember());
 	}
 	
 	/** 
@@ -76,11 +76,11 @@ public class MemberService {
 	 */
 	public int initMember() throws ParseException {
 		
-		Member dto1 = new Member("김현수", "970620-2000000", "01063886503", "서울특별시", "화이자", "2021-05-31");
-		Member dto2 = new Member("김진홍", "980828-1000000", "01089971463", "강원도", "화이자", "2021-06-01");
-		Member dto3 = new Member("조춘웅", "420519-1000000", "01052535388", "경기도", "AZ", "2021-06-04");
-		Member dto4 = new Member("김태재", "970530-1000000", "01093433384", "경상남도", "모더나", "2021-06-02");
-		//Member dto5 = new Member("박승현", "971230-2000000", "01091639252", "충청북도", "얀센", "2021-06-03");
+		Member dto1 = new Member("김현수", "970620-2000000", "01063886503", "서울특별시", "화이자", "20210531");
+		Member dto2 = new Member("김진홍", "980828-1000000", "01089971463", "강원도", "화이자", "20210601");
+		Member dto3 = new Member("조춘웅", "420519-1000000", "01052535388", "경기도", "AZ", "20210604");
+		Member dto4 = new Member("김태재", "970530-1000000", "01093433384", "경상남도", "모더나", "20210602");
+		//Member dto5 = new Member("박승현", "971230-2000000", "01091639252", "충청북도", "얀센", "20210603");
 		addMember(dto1);
 		addMember(dto2);
 		addMember(dto3);
@@ -130,7 +130,7 @@ public class MemberService {
 	 * @param dto 등록 회원
 	 * @throws ParseException 
 	 */
-	public void addMember(Member dto) throws ParseException {
+	public boolean addMember(Member dto) throws ParseException {
 		if(exist(dto.getRegiNum()) == -1) {
 			int period = findPeriod(dto.getVacType());
 			if(period > 0) {
@@ -138,12 +138,17 @@ public class MemberService {
 				dto.setDateSecond(date);
 				dto.setNotiDate(addDate(date, 3));
 				memList.add(dto);
-				System.out.println("등록이 완료되었습니다.");
+				//System.out.println("등록이 완료되었습니다.");
+				return true;
 			} else {
 				System.out.println("[오류] 입력한 백신 이름이 올바르지 않습니다");
+				return false;
 			}
 		}
-		else System.out.println("[오류] " + dto.getName() + "님은 이미 등록되었습니다.");
+		else {
+			System.out.println("[오류] " + dto.getName() + "님은 이미 등록되었습니다.");
+			return false;
+		}
 	}
 	
 	/**
@@ -153,7 +158,7 @@ public class MemberService {
 	 * </pre>
 	 * @throws ParseException 
 	 */
-	public void addMember() throws ParseException {
+	public boolean addMember() throws ParseException {
 		Scanner sc = new Scanner(System.in);
 		UI ui = new UI();
 		ArrayList<String> districts = new CenterService().getDistricts();
@@ -200,7 +205,7 @@ public class MemberService {
 						close2 = true;
 					} else if(tmp.equals("N")) {
 						System.out.println("이전 메뉴로 되돌아갑니다.");
-						return;
+						return false;
 					} else {
 						System.out.println("[오류] 잘못 입력하셨습니다.");
 					}
@@ -224,7 +229,7 @@ public class MemberService {
 			}
 		}
 		
-		addMember(dto);
+		return addMember(dto);
 	}
 	
 	/**

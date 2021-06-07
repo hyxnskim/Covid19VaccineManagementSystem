@@ -36,11 +36,11 @@ public class CenterService {
 	
 	/** 기본생성자 : 초기 센터 등록 수행 */
 	public CenterService() {
-		System.out.println("초기 센터 등록작업이 완료되었습니다");
+		//System.out.println("초기 센터 등록작업이 완료되었습니다");
 		readFile();
-		for(int i = 0 ; i < districts.size(); i++ ) {
-			System.out.println(districts.get(i));
-		}
+//		for(int i = 0 ; i < districts.size(); i++ ) {
+//			System.out.println(districts.get(i));
+//		}
 	}
 	
 	
