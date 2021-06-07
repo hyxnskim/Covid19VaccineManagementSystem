@@ -289,9 +289,6 @@ public class CenterService {
 	 * </pre>
 	 */
 	public void printAllCenter() {
-		UI ui = new UI();
-		ui.printSubMenu("전체 센터 조회");
-		
 		for(int i = 0; i < cenList.size(); i++) {
 			System.out.println(cenList.get(i));
 		}
@@ -304,11 +301,8 @@ public class CenterService {
 	 */
 	public void printCenterByDistrict() {
 		Scanner sc = new Scanner(System.in);
-		UI ui = new UI();
 		int num;
 		String district;
-		
-		ui.printSubMenu("지역별 센터 조회");
 		
 		System.out.print("[ ");
 		for(int i = 0; i < districts.size(); i++) {
@@ -362,11 +356,9 @@ public class CenterService {
 	 */
 	public void printCenterByKeywords() {
 		Scanner sc = new Scanner(System.in);
-		UI ui = new UI();
 		String keyword;
 		int cnt = 0;
 		
-		ui.printSubMenu("키워드로 센터 조회");
 		System.out.print("조회하실 키워드를 입력하세요 : "); keyword = sc.next();
 		
 		Center dto = new Center();

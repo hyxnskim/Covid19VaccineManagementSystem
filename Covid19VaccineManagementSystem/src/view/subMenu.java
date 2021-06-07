@@ -8,6 +8,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Scanner;
 
+import model.service.CenterService;
 import model.service.MemberService;
 import model.service.Service;
 import util.UI;
@@ -102,5 +103,43 @@ public class subMenu {
 		}
 	}
 	
+	public void printCenter() {
+		Scanner sc = new Scanner(System.in);
+		CenterService cs = new CenterService();
+		int num;
+		
+		while(true) {
+			ui.printSubMenu("예방접종센터 조회");
+			
+			System.out.println("1. 전체 센터 조회");
+			System.out.println("2. 지역별 센터 조회");
+			System.out.println("3. 키워드로 조회");
+			System.out.println("0. 돌아가기");
+			
+			System.out.print("사용하실 메뉴 번호를 입력하세요 : ");
+			num = sc.nextInt();
+			switch(num) {
+			case 1:
+				ui.printSubSubMenu("전체 센터 조회");
+				cs.printAllCenter();
+				break;
+			case 2:
+				ui.printSubSubMenu("지역별 센터 조회");
+				cs.printCenterByDistrict();
+				break;
+				
+			case 3:
+				ui.printSubMenu("키워드 조회");
+				cs.printCenterByKeywords();
+				break;
+			case 0:
+				System.out.println("메인 메뉴로 돌아갑니다.");
+				return;
+			default:
+				System.out.println("0~3 사이의 숫자를 입력하세요.");
+			}
+		}
 	
+		
+	}
 }

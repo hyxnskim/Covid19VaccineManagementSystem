@@ -63,7 +63,7 @@ public class mainMenu {
 				}		
 				break;
 			case 3:
-				
+				sm.printCenter();
 				break;
 			case 4:
 				
