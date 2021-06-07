@@ -341,6 +341,22 @@ public class CenterService {
 	
 	/**
 	 * <pre>
+	 * 지역별 센터 조회
+	 * </pre>
+	 * @param district 조회할 지역명
+	 */
+	public void printCenterByDistrict(String district) {
+		Center dto = new Center();
+		for(int i = 0; i < cenList.size(); i++) {
+			dto = cenList.get(i);
+			if(dto.getDistrict().equals(district)) {
+				System.out.println(dto);
+			}
+		}
+	}
+	
+	/**
+	 * <pre>
 	 * 키워드로 센터 조회
 	 * </pre>
 	 */

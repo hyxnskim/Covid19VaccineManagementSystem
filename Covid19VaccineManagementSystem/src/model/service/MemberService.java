@@ -226,4 +226,152 @@ public class MemberService {
 		
 		addMember(dto);
 	}
+	
+	/**
+	 * <pre>
+	 * 회원 검증 메서드
+	 * </pre>
+	 * @param name 이름
+	 * @param regiNum 주민번호
+	 * @return 성공시 해당 회원 객체, 실패시 null
+	 */
+	public Member verifyMember(String name, String regiNum) {
+		for(int i = 0; i < memList.size(); i++) {
+			Member dto = memList.get(i);
+			if(dto.getName().equals(name) && dto.getRegiNum().equals(regiNum)) {
+				System.out.println("회원 정보가 확인되었습니다.");
+				return dto;
+			}
+		}
+		System.out.println("[오류] 입력하신 정보로 등록된 회원이 존재하지 않습니다.");
+		return null;
+	}
+	
+	/**
+	 * <pre>
+	 * 사용자 정보 삭제 메서드
+	 * </pre>
+	 */
+	public void delMember() {
+		Scanner sc = new Scanner(System.in);
+		UI ui = new UI();
+		String name, regiNum;
+		
+		ui.printSubMenu("회원 정보 삭제");
+		System.out.print("이름 : "); name = sc.next();
+		System.out.print("\n주민번호 : "); regiNum = sc.next();
+		
+		Member dto = null;
+		dto = verifyMember(name, regiNum);
+		
+		if(dto == null) {
+			System.out.println("이전 메뉴로 되돌아갑니다.");
+			return;
+		}
+		
+		System.out.println(dto);
+		
+		boolean close = false;
+		String yn;
+		while(!close) {
+			System.out.println("위 회원정보를 삭제하겠습니까?(Y/N) : "); yn = sc.next();
+			if(yn.equals("Y")) {
+				memList.remove(dto);
+				System.out.println("정상적으로 삭제되었습니다.");
+				close = true;
+			} else if(yn.equals("N")) {
+				System.out.println("이전 메뉴로 되돌아갑니다.");
+				close = true;
+			} else {
+				System.out.println("[오류] 입력 형식을 확인해주세요");
+			}
+		}
+		
+	}
+	
+	/**
+	 * <pre>
+	 * 사용자 정보 수정 메서드
+	 * </pre>
+	 * @throws ParseException
+	 */
+	public void reviseMember() throws ParseException {
+		Scanner sc = new Scanner(System.in);
+		UI ui = new UI();
+		String name, regiNum;
+		
+		ui.printSubMenu("회원 정보 수정");
+		System.out.print("이름 : "); name = sc.next();
+		System.out.print("\n주민번호 : "); regiNum = sc.next();
+		
+		Member dto = null;
+		dto = verifyMember(name, regiNum);
+		
+		if(dto == null) {
+			System.out.println("\n이전 메뉴로 되돌아갑니다.");
+			return;
+		}
+		
+		System.out.println(dto);
+		
+		boolean close = false;
+		String yn;
+		while(!close) {
+			System.out.print("\n위 회원정보를 수정하겠습니까?(Y/N) : "); yn = sc.next();
+			if(yn.equals("Y")) {
+				memList.remove(dto);
+				addMember();
+				System.out.println("\n정상적으로 수정되었습니다.");
+				close = true;
+			} else if(yn.equals("N")) {
+				System.out.println("\n이전 메뉴로 되돌아갑니다.");
+				close = true;
+			} else {
+				System.out.println("\n[오류] 입력 형식을 확인해주세요");
+			}
+		}
+	}
+	
+	/**
+	 * <pre>
+	 * 2차 접종 예정일 알림 메서드
+	 * </pre>
+	 * @throws ParseException
+	 */
+	public void notification() throws ParseException {
+		Scanner sc = new Scanner(System.in);
+		String name, regiNum;
+		
+		System.out.print("이름 : "); name = sc.next();
+		System.out.print("\n주민번호 : "); regiNum = sc.next();
+		
+		Member dto = null;
+		dto = verifyMember(name, regiNum);
+		
+		if(dto == null) {
+			System.out.println("\n이전 메뉴로 되돌아갑니다.");
+			return;
+		}
+		
+		String today = new SimpleDateFormat("yyyyMMdd").format(new Date());
+		String second = dto.getDateSecond();
+		
+		int td = Integer.parseInt(today);
+		int sd = Integer.parseInt(second);
+		
+		second = new SimpleDateFormat("yyyy년 MM월 dd일").format(dto.getDateSecond());
+		if(sd - td > 3) {
+			System.out.println("알림 기간이 아닙니다.\n");
+			System.out.println(dto.getName() + "님의 2차 접종 예정일은 " + second + " 입니다.");
+		} else if(sd - td <3 && sd - td >= 0) {
+			System.out.println(dto.getName() + "님의 " + dto.getVacType() + " 백신 2차 접종 예정일은 " + second + " 입니다.");
+			System.out.println("거주지역 내의 예방접종 센터는 다음과 같습니다 : ");
+			CenterService cs = new CenterService();
+			cs.printCenterByDistrict(dto.getDistrict());
+			System.out.println("본 내용은 휴대폰 " + dto.getContact() + " 으로 전송되었습니다.");
+		} else {
+			System.out.println("2차 접종 예정일이 지났습니다.");
+			System.out.println(dto.getName() + "님의 2차 접종 예정일은 " + second + " 이었습니다.");
+		}
+	}
 }
