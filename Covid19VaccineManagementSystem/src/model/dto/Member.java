@@ -3,6 +3,10 @@
  */
 package model.dto;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 /**
  * <pre>
  * 등록 사용자 도메인 클래스
@@ -212,12 +216,34 @@ public class Member {
 		builder.append(district);
 		builder.append(", 접종 백신명 : ");
 		builder.append(vacType);
+		
+		SimpleDateFormat dtFormat = new SimpleDateFormat("yyyyMMdd");
+		Date dt = null;
+		try {
+			dt = dtFormat.parse(dateFirst);
+		} catch (ParseException e) {
+			e.printStackTrace();
+		} 
+		new SimpleDateFormat("yyyy-MM-dd").format(dt);
 		builder.append(", 1차 접종일 : ");
-		builder.append(dateFirst);
+		builder.append(new SimpleDateFormat("yyyy-MM-dd").format(dt));
+		
+		try {
+			dt = dtFormat.parse(dateSecond);
+		} catch (ParseException e) {
+			e.printStackTrace();
+		} 
 		builder.append(", 2차 접종 예정일 : ");
-		builder.append(dateSecond);
+		builder.append(new SimpleDateFormat("yyyy-MM-dd").format(dt));
+		
+		try {
+			dt = dtFormat.parse(notiDate);
+		} catch (ParseException e) {
+			e.printStackTrace();
+		} 
 		builder.append(", 2차 접종 알림 예정일 : ");
-		builder.append(notiDate);
+		builder.append(new SimpleDateFormat("yyyy-MM-dd").format(dt));
+		
 		return builder.toString();
 	}
 	

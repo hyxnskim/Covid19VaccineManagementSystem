@@ -40,9 +40,8 @@ public class MemberService {
 	 */
 	public MemberService() {
 		try {
-			System.out.println("초기 회원 등록작업이 완료되었습니다 : " + initMember());
+			initMember();
 		} catch (ParseException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
@@ -82,7 +81,7 @@ public class MemberService {
 	 */
 	public int initMember() throws ParseException {
 		
-		Member dto1 = new Member("김현수", "970620-2000000", "01063886503", "서울특별시", "화이자", "20210531");
+		Member dto1 = new Member("김현수", "970620-2000000", "01063886503", "서울특별시", "화이자", "20210531");	//20210531 20210523 20210513
 		Member dto2 = new Member("김진홍", "980828-1000000", "01089971463", "강원도", "화이자", "20210601");
 		Member dto3 = new Member("조춘웅", "420519-1000000", "01052535388", "경기도", "AZ", "20210604");
 		Member dto4 = new Member("김태재", "970530-1000000", "01093433384", "경상남도", "모더나", "20210602");
@@ -183,7 +182,7 @@ public class MemberService {
 				dto.setDateSecond(date);
 				dto.setNotiDate(addDate(date, -3));
 				memList.add(dto);
-				System.out.println("등록이 완료되었습니다.");
+				//System.out.println("등록이 완료되었습니다.");
 				return true;
 			} else {
 				System.out.println("[오류] 입력한 백신 이름이 올바르지 않습니다");
@@ -424,20 +423,8 @@ public class MemberService {
 	 * </pre>
 	 * @throws ParseException
 	 */
-	public void notification() throws ParseException {
+	public void notification(Member dto) throws ParseException {
 		Scanner sc = new Scanner(System.in);
-		String name, regiNum;
-		
-		System.out.print("이름 : "); name = sc.next();
-		System.out.print("\n주민번호 : "); regiNum = sc.next();
-		
-		Member dto = null;
-		dto = verifyMember(name, regiNum);
-		
-		if(dto == null) {
-			System.out.println("\n이전 메뉴로 되돌아갑니다.");
-			return;
-		}
 		
 		String today = new SimpleDateFormat("yyyyMMdd").format(new Date());
 		String second = dto.getDateSecond();
@@ -445,19 +432,22 @@ public class MemberService {
 		int td = Integer.parseInt(today);
 		int sd = Integer.parseInt(second);
 		
-		second = new SimpleDateFormat("yyyy년 MM월 dd일").format(dto.getDateSecond());
+		SimpleDateFormat dtFormat = new SimpleDateFormat("yyyyMMdd");
+		Date dt = dtFormat.parse(second); 
+		String tmp = new SimpleDateFormat("yyyy년 MM월 dd일").format(dt);
+		
 		if(sd - td > 3) {
 			System.out.println("알림 기간이 아닙니다.\n");
-			System.out.println(dto.getName() + "님의 2차 접종 예정일은 " + second + " 입니다.");
-		} else if(sd - td <3 && sd - td >= 0) {
-			System.out.println(dto.getName() + "님의 " + dto.getVacType() + " 백신 2차 접종 예정일은 " + second + " 입니다.");
+			System.out.println(dto.getName() + "님의 2차 접종 예정일은 " + tmp + " 입니다.");
+		} else if(sd - td <= 3 && sd - td >= 0) {
+			System.out.println(dto.getName() + "님의 " + dto.getVacType() + " 백신 2차 접종 예정일은 " + tmp + " 입니다.");
 			System.out.println("거주지역 내의 예방접종 센터는 다음과 같습니다 : ");
 			CenterService cs = new CenterService();
 			cs.printCenterByDistrict(dto.getDistrict());
 			System.out.println("본 내용은 휴대폰 " + dto.getContact() + " 으로 전송되었습니다.");
 		} else {
 			System.out.println("2차 접종 예정일이 지났습니다.");
-			System.out.println(dto.getName() + "님의 2차 접종 예정일은 " + second + " 이었습니다.");
+			System.out.println(dto.getName() + "님의 2차 접종 예정일은 " + tmp + " 이었습니다.");
 		}
 	}
 }
