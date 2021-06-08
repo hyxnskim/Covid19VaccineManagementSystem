@@ -41,6 +41,7 @@ public class Member {
 	/** 2차 접종 알림일 */
 	private String notiDate;
 
+	
 	/** 기본 생성자	 */
 	public Member() {}
 
@@ -62,8 +63,6 @@ public class Member {
 		this.district = district;
 		this.vacType = vacType;
 		this.dateFirst = dateFirst;
-		
-		// TODO : dateSecond, notiDate 계산하는 메서드 구현해서 추가하기
 	}
 
 	/**
@@ -186,6 +185,13 @@ public class Member {
 		return result;
 	}
 
+	/**
+	 * <pre>
+	 * equal 메서드 재정의
+	 * -- regiNum이 일치하면 동일한 객체로 처리
+	 * @param obj 검사 대상 객체
+	 * </pre>
+	 */
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -203,6 +209,12 @@ public class Member {
 		return true;
 	}
 
+	/**
+	 * <pre>
+	 * toString 메서드 재정의
+	 * </pre>
+	 * @return 멤버 객체 출력 문자열
+	 */
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
@@ -246,9 +258,4 @@ public class Member {
 		
 		return builder.toString();
 	}
-	
-	
-	
-	
-	
 }

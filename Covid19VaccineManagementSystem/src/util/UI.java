@@ -10,6 +10,12 @@ package util;
  */
 public class UI {
 
+	/**
+	 * <pre>
+	 * 서브메뉴 출력 메서드
+	 * </pre>
+	 * @param menuName 메뉴 이름
+	 */
 	public void printSubMenu(String menuName) {
 		System.out.println();
 		System.out.println("---------------------------------------");
@@ -17,11 +23,15 @@ public class UI {
 		System.out.println("---------------------------------------");
 	}
 	
+	/**
+	 * <pre>
+	 * 서브-서브 메뉴 출력 메서드
+	 * </pre>
+	 * @param menuName 메뉴 이름
+	 */
 	public void printSubSubMenu(String menuName) {
-		System.out.println();
 		System.out.println();
 		System.out.println("***\t" + menuName + "\t***");
 		System.out.println();
 	}
-	
 }

@@ -29,6 +29,7 @@ public class Center {
 	/** 연락처, 선택 */
 	private String contact;
 
+	
 	/** 기본 생성자	 */
 	public Center() {}
 
@@ -159,6 +160,13 @@ public class Center {
 		return result;
 	}
 
+	/**
+	 * <pre>
+	 * equal 메서드 재정의
+	 * -- 센터명과 우편번호가 동시에 일치하면 동일한 객체로 처리
+	 * @param obj 검사 대상 객체
+	 * </pre>
+	 */
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -181,27 +189,24 @@ public class Center {
 		return true;
 	}
 
+	/**
+	 * <pre>
+	 * toString 메서드 재정의
+	 * </pre>
+	 * @return 센터 객체 출력 문자열
+	 */
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
 		builder.append(centerName);
-		builder.append("//");
-		
+		builder.append(", ");
 		builder.append(facName);
-		builder.append("//");
-		
+		builder.append(", ");
 		builder.append(postCode);
-		builder.append("//");
-		
+		builder.append(", ");
 		builder.append(address);
-		builder.append("//");
-		
+		builder.append(", ");
 		builder.append(contact);
 		return builder.toString();
 	}
-	
-	
-	
-
-	
 }

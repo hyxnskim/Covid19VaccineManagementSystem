@@ -1,6 +1,4 @@
-/**
- * 
- */
+
 package view;
 
 import java.text.ParseException;
@@ -13,6 +11,7 @@ import model.service.CenterService;
 import model.service.MemberService;
 import model.service.Service;
 import util.UI;
+import util.Utility;
 
 /**
  * <pre>
@@ -27,8 +26,15 @@ public class subMenu {
 	Service service = new Service();
 	MemberService ms = new MemberService();
 	CenterService cs = new CenterService();
+	Utility util = new Utility();
 	Scanner sc = new Scanner(System.in);
 	
+	/**
+	 * <pre>
+	 * 백신 접종 현황 조회 메서드
+	 * </pre>
+	 * @throws ParseException
+	 */
 	public void printCurrentVac() throws ParseException {
 		int num;
 
@@ -41,6 +47,7 @@ public class subMenu {
 			
 			System.out.print("사용하실 메뉴 번호를 입력하세요 : ");
 			num = sc.nextInt();
+			
 			switch(num) {
 			case 1:
 				ui.printSubSubMenu("오늘 현환 조회");
@@ -54,11 +61,11 @@ public class subMenu {
 				System.out.print("시작일 : "); sdate = sc.nextInt();
 				System.out.print("종료일 : "); edate = sc.nextInt();
 				
-				int tmp;
+				String tmp;
 				for(int i = 0; i < edate - sdate + 1; i++) {
-					tmp = sdate + i;
+					tmp = util.addDate(Integer.toString(sdate), i);
 					SimpleDateFormat dtFormat = new SimpleDateFormat("yyyyMMdd");
-					Date dt = dtFormat.parse(Integer.toString(tmp)); 
+					Date dt = dtFormat.parse(tmp); 
 					
 					System.out.println();
 					service.inocNumToday(new SimpleDateFormat("yyyy-MM-dd").format(dt));
@@ -75,6 +82,12 @@ public class subMenu {
 		}
 	}
 	
+	/**
+	 * <pre>
+	 * 우선접종 대상자 여부 확인 메서드
+	 * </pre>
+	 * @throws ParseException
+	 */
 	public void verifyPrior() throws ParseException {
 		String yn;
 		
@@ -100,6 +113,12 @@ public class subMenu {
 		}
 	}
 	
+	/**
+	 * <pre>
+	 * 예방접종센터 조회 메서드
+	 * </pre>
+	 * @throws ParseException
+	 */
 	public void printCenter() {
 		int num;
 		
@@ -136,7 +155,12 @@ public class subMenu {
 		}
 	}
 	
-	
+	/**
+	 * <pre>
+	 * 2차 접종 대기기간 조회 메서드
+	 * </pre>
+	 * @throws ParseException
+	 */
 	public void viewPeriod() throws ParseException {
 		String name, vacType, dateFirst;
 		String dateSecond, tmp, yn;
@@ -148,7 +172,7 @@ public class subMenu {
 		if(vacType == null) return;
 		System.out.print("1차 접종일(형식 : 20210608) : "); dateFirst = sc.next();
 		
-		dateSecond = ms.addDate(dateFirst, ms.findPeriod(vacType));
+		dateSecond = util.addDate(dateFirst, ms.findPeriod(vacType));
 		
 		SimpleDateFormat dtFormat = new SimpleDateFormat("yyyyMMdd");
 		Date dt = dtFormat.parse(dateSecond); 
@@ -172,16 +196,27 @@ public class subMenu {
 		}
 	}
 	
+	/**
+	 * <pre>
+	 * 2차 접종 알림 서비스 등록 메서드
+	 * </pre>
+	 * @throws ParseException
+	 */
 	public void joinService() throws ParseException {
 		ui.printSubMenu("2차 접종 알림 서비스 등록");
 		
 		if(ms.addMember()) {
 			System.out.println("등록 성공");
-		} else {
-			//System.out.println("[오류] 등록 실패");
-		}
+		} 
 	}
 	
+	/**
+	 * <pre>
+	 * 회원 인증 메서드
+	 * </pre>
+	 * @return 등록된 회원이면 해당 회원 객체, 그렇지 않으면 null;
+	 * @throws ParseException
+	 */
 	public Member isRegistered() {
 		String name, regiNum;
 		ui.printSubSubMenu("회원 정보 확인");
@@ -192,6 +227,12 @@ public class subMenu {
 		return ms.verifyMember(name, regiNum);
 	}
 	
+	/**
+	 * <pre>
+	 * 등록 회원 개인정보 관리 메서드
+	 * </pre>
+	 * @throws ParseException
+	 */
 	public void myInfoManagement() throws ParseException {
 		Member dto = new Member();
 		int num;
@@ -246,6 +287,12 @@ public class subMenu {
 		}
 	}
 	
+	/**
+	 * <pre>
+	 * 관리자 전용 메뉴
+	 * </pre>
+	 * @throws ParseException
+	 */
 	public void adminMenu() throws ParseException {
 		String id, pw;
 		int num;
@@ -284,6 +331,12 @@ public class subMenu {
 		}
 	}
 	
+	/**
+	 * <pre>
+	 * 관리자 전용 회원관리 메서드
+	 * </pre>
+	 * @throws ParseException
+	 */
 	public void manageMember() throws ParseException {
 		int num;
 		
@@ -329,6 +382,12 @@ public class subMenu {
 		}
 	}
 	
+	/**
+	 * <pre>
+	 * 관리자 전용 센터관리 메서드
+	 * </pre>
+	 * @throws ParseException
+	 */
 	public void manageCenter() {
 		int num;
 		

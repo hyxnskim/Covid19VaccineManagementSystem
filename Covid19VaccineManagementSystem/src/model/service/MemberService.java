@@ -6,12 +6,11 @@ package model.service;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.Scanner;
 
 import model.dto.Member;
-import util.UI;
+import util.Utility;
 
 /**
  * <pre>
@@ -22,12 +21,6 @@ import util.UI;
  * @since jdk1.8
  */
 public class MemberService {
-	
-	public static void main(String[] args) throws ParseException {
-		MemberService ms = new MemberService();
-		ms.initMember();
-		ms.printAllMember();
-	}
 	
 	/** 회원들을 저장/관리하기 위한 자료 저장구조 */
 	private ArrayList<Member> memList = new ArrayList<Member>();
@@ -95,30 +88,16 @@ public class MemberService {
 		return getCount();
 	}
 	
+	/**
+	 * <pre>
+	 * 전체 회원 출력 메서드
+	 * </pre>
+	 */
 	public void printAllMember() {
 		System.out.println("전체 회원 수 : " + memList.size());
 		for(int i = 0; i < memList.size(); i++) {
 			System.out.println("[" + (i+1) + "] " + memList.get(i));
 		}
-	}
-	
-	/**
-	 * <pre>
-	 * 날짜 계산 메서드
-	 * </pre>
-	 * @param strDate 기준일
-	 * @param day 더할 일 수
-	 * @return 기준일이 day만큼 더해진 날짜
-	 * @throws ParseException
-	 */
-	public String addDate(String strDate, int day) throws ParseException { 
-		SimpleDateFormat dtFormat = new SimpleDateFormat("yyyyMMdd"); 
-		Calendar cal = Calendar.getInstance(); 
-		Date dt = dtFormat.parse(strDate); 
-		cal.setTime(dt); 
-
-		cal.add(Calendar.DATE, day); 
-		return dtFormat.format(cal.getTime()); 
 	}
 	
 	/**
@@ -135,9 +114,15 @@ public class MemberService {
 		else return 0;
 	}
 	
-	
+	/**
+	 * <pre>
+	 * 접종 백신 이름을 입력받아 유효한 이름인지 검사
+	 * </pre>
+	 * @return 성공시 백신 이름, 실패시 null
+	 */
 	public String inputVacType() {
 		Scanner sc = new Scanner(System.in);
+		Utility util = new Utility();
 		String tmp;
 		boolean close = false;
 
@@ -147,18 +132,8 @@ public class MemberService {
 				return tmp;
 			} else if(tmp.equals("얀센")) {
 				System.out.println("[알림] 얀센은 2차접종이 필요하지 않으므로 등록하지 않으셔도 됩니다.");
-				boolean close2 = false;
-				while(!close2) {
-					System.out.print("다른 백신으로 등록하시겠습니까? (Y/N) : ");
-					tmp = sc.next();
-					if(tmp.equals("Y")) {
-						close2 = true;
-					} else if(tmp.equals("N")) {
-						System.out.println("이전 메뉴로 되돌아갑니다.");
-						return null;
-					} else {
-						System.out.println("[오류] 잘못 입력하셨습니다.");
-					}
+				if(!util.getAnswer("다른 백신으로 등록하시겠습니까?")) {
+					return null;
 				}
 			} else {
 				System.out.println("[오류] 입력하신 백신 이름이 올바르지 않습니다.");
@@ -172,17 +147,19 @@ public class MemberService {
 	 * 회원 등록 메서드
 	 * </pre>
 	 * @param dto 등록 회원
+	 * @return 성공시 true, 실패시 false
 	 * @throws ParseException 
 	 */
 	public boolean addMember(Member dto) throws ParseException {
+		
 		if(exist(dto.getRegiNum()) == -1) {
 			int period = findPeriod(dto.getVacType());
 			if(period > 0) {
-				String date = addDate(dto.getDateFirst(), period);
+				Utility util = new Utility();
+				String date = util.addDate(dto.getDateFirst(), period);
 				dto.setDateSecond(date);
-				dto.setNotiDate(addDate(date, -3));
+				dto.setNotiDate(util.addDate(date, -3));
 				memList.add(dto);
-				//System.out.println("등록이 완료되었습니다.");
 				return true;
 			} else {
 				System.out.println("[오류] 입력한 백신 이름이 올바르지 않습니다");
@@ -200,6 +177,7 @@ public class MemberService {
 	 * 회원 둥록 메서드
 	 * -- 사용자 입력
 	 * </pre>
+	 * @return 성공시 true, 실패시 false
 	 * @throws ParseException 
 	 */
 	public boolean addMember() throws ParseException {
@@ -217,6 +195,17 @@ public class MemberService {
 		return addMember(name, vacType, dateFirst);
 	}
 	
+	/**
+	 * <pre>
+	 * 회원 등록 메서드
+	 * -- 다른 메서드로부터 호출됨
+	 * </pre>
+	 * @param name 아룸
+	 * @param vacType 접종 백신 이름
+	 * @param dateFirst 1차 접종일
+	 * @return 성공시 true, 실패시 false
+	 * @throws ParseException
+	 */
 	public boolean addMember(String name, String vacType, String dateFirst) throws ParseException {
 		Scanner sc = new Scanner(System.in);
 		ArrayList<String> districts = new CenterService().getDistricts();
@@ -277,11 +266,10 @@ public class MemberService {
 	 * </pre>
 	 */
 	public void delMember() {
+		Utility util = new Utility();
 		Scanner sc = new Scanner(System.in);
-		UI ui = new UI();
 		String name, regiNum;
 		
-		ui.printSubMenu("회원 정보 삭제");
 		System.out.print("이름 : "); name = sc.next();
 		System.out.print("\n주민번호 : "); regiNum = sc.next();
 		
@@ -295,20 +283,11 @@ public class MemberService {
 		
 		System.out.println(dto);
 		
-		boolean close = false;
-		String yn;
-		while(!close) {
-			System.out.println("위 회원정보를 삭제하겠습니까?(Y/N) : "); yn = sc.next();
-			if(yn.equals("Y")) {
-				memList.remove(dto);
-				System.out.println("정상적으로 삭제되었습니다.");
-				close = true;
-			} else if(yn.equals("N")) {
-				System.out.println("이전 메뉴로 되돌아갑니다.");
-				close = true;
-			} else {
-				System.out.println("[오류] 입력 형식을 확인해주세요");
-			}
+		if(util.getAnswer("위 회원정보를 삭제하겠습니까?")){
+			memList.remove(dto);
+			System.out.println("정상적으로 삭제되었습니다.");
+		} else {
+			System.out.println("이전 메뉴로 되돌아갑니다.");
 		}
 	}
 	
@@ -317,24 +296,16 @@ public class MemberService {
 	 * 사용자 정보 삭제 메서드
 	 * -- 사용자용
 	 * </pre>
+	 * @param dto 삭제할 멤버 객체
 	 */
 	public void delMember(Member dto) {
-		Scanner sc = new Scanner(System.in);
-		boolean close = false;
-		String yn;
+		Utility util = new Utility();
 		
-		while(!close) {
-			System.out.print("코로나 백신 2차 접종 알림 서비스를 해지하시겠습니까?(Y/N) : "); yn = sc.next();
-			if(yn.equals("Y")) {
-				memList.remove(dto);
-				System.out.println("정상적으로 삭제되었습니다.");
-				close = true;
-			} else if(yn.equals("N")) {
-				System.out.println("이전 메뉴로 되돌아갑니다.");
-				close = true;
-			} else {
-				System.out.println("[오류] 입력 형식을 확인해주세요");
-			}
+		if(util.getAnswer("코로나 백신 2차 접종 알림 서비스를 해지하시겠습니까?")) {
+			memList.remove(dto);
+			System.out.println("정상적으로 삭제되었습니다.");
+		} else {
+			System.out.println("이전 메뉴로 되돌아갑니다.");
 		}
 	}
 	
@@ -345,37 +316,27 @@ public class MemberService {
 	 * </pre>
 	 */
 	public void delAllMember() {
-		Scanner sc = new Scanner(System.in);
-		boolean close = false;
-		String yn;
+		Utility util = new Utility();
 		
-		while(!close) {
-			System.out.println("전체 회원 정보를 삭제하시겠습니까?(Y/N) : "); yn = sc.next();
-			if(yn.equals("Y")) {
-				memList.clear();
-				System.out.println("정상적으로 삭제되었습니다.");
-				close = true;
-			} else if(yn.equals("N")) {
-				System.out.println("이전 메뉴로 되돌아갑니다.");
-				close = true;
-			} else {
-				System.out.println("[오류] 입력 형식을 확인해주세요");
-			}
+		if(util.getAnswer("전체 회원 정보를 삭제하시겠습니까?")) {
+			memList.clear();
+			System.out.println("정상적으로 삭제되었습니다.");
+		} else {
+			System.out.println("이전 메뉴로 되돌아갑니다.");
 		}
 	}
 	
 	/**
 	 * <pre>
 	 * 사용자 정보 수정 메서드
+	 * -- 관리자용
 	 * </pre>
 	 * @throws ParseException
 	 */
 	public void reviseMember() throws ParseException {
 		Scanner sc = new Scanner(System.in);
-		UI ui = new UI();
 		String name, regiNum;
 		
-		ui.printSubMenu("회원 정보 수정");
 		System.out.print("이름 : "); name = sc.next();
 		System.out.print("\n주민번호 : "); regiNum = sc.next();
 		
@@ -390,30 +351,27 @@ public class MemberService {
 		reviseMember(dto);
 	}
 	
+	/**
+	 * <pre>
+	 * 회원 정보 수정 메서드
+	 * -- 사용자용
+	 * </pre>
+	 * @param dto 수정할 회원 객체
+	 * @throws ParseException
+	 */
 	public void reviseMember(Member dto) throws ParseException {
+		Utility util = new Utility();
 		Scanner sc = new Scanner(System.in);
 		
 		System.out.println(dto);
 		
-		boolean close = false;
-		String yn;
-		while(!close) {
-			System.out.print("\n위 회원정보를 수정하겠습니까?(Y/N) : "); yn = sc.next();
-			if(yn.equals("Y")) {
-				memList.remove(dto);
-				if(addMember()) {
-					System.out.println("\n정상적으로 수정되었습니다.");
-					close = true;
-				} else {
-					System.out.println("\n이전 메뉴로 되돌아갑니다.");
-					close = true;
-				}
-			} else if(yn.equals("N")) {
-				System.out.println("\n이전 메뉴로 되돌아갑니다.");
-				close = true;
-			} else {
-				System.out.println("\n[오류] 입력 형식을 확인해주세요");
+		if(util.getAnswer("위 회원정보를 수정하겠습니까?")) {
+			memList.remove(dto);
+			if(addMember()) {
+				System.out.println("\n정상적으로 수정되었습니다.");
 			}
+		} else {
+			System.out.println("\n이전 메뉴로 되돌아갑니다.");
 		}
 	}
 	
@@ -421,6 +379,7 @@ public class MemberService {
 	 * <pre>
 	 * 2차 접종 예정일 알림 메서드
 	 * </pre>
+	 * @param 대상 멤버 객체
 	 * @throws ParseException
 	 */
 	public void notification(Member dto) throws ParseException {
@@ -439,12 +398,14 @@ public class MemberService {
 		if(sd - td > 3) {
 			System.out.println("알림 기간이 아닙니다.\n");
 			System.out.println(dto.getName() + "님의 2차 접종 예정일은 " + tmp + " 입니다.");
+			
 		} else if(sd - td <= 3 && sd - td >= 0) {
 			System.out.println(dto.getName() + "님의 " + dto.getVacType() + " 백신 2차 접종 예정일은 " + tmp + " 입니다.");
 			System.out.println("거주지역 내의 예방접종 센터는 다음과 같습니다 : ");
 			CenterService cs = new CenterService();
 			cs.printCenterByDistrict(dto.getDistrict());
 			System.out.println("본 내용은 휴대폰 " + dto.getContact() + " 으로 전송되었습니다.");
+			
 		} else {
 			System.out.println("2차 접종 예정일이 지났습니다.");
 			System.out.println(dto.getName() + "님의 2차 접종 예정일은 " + tmp + " 이었습니다.");

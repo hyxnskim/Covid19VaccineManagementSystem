@@ -1,9 +1,5 @@
-/**
- * 
- */
+
 package model.service;
-
-
 
 import java.io.BufferedReader;
 import java.io.FileInputStream;
@@ -14,6 +10,7 @@ import java.util.stream.Collectors;
 
 import model.dto.Center;
 import util.UI;
+import util.Utility;
 
 /**
  * <pre>
@@ -34,12 +31,18 @@ public class CenterService {
 	/** tempArrayList에서 중복을 제거한 지역만을 저장하기 위한 자료 저장구조 */
 	private ArrayList<String> districts = new ArrayList<String>();
 	
+	
 	/** 기본생성자 : 초기 센터 등록 수행 */
 	public CenterService() {
 		readFile();
 	}
 	
-	
+	/**
+	 * <pre>
+	 * districts 리스트 반환
+	 * <pre>
+	 * @return ArrayList districts
+	 */
 	public ArrayList<String> getDistricts(){
 		return districts;
 	}
@@ -69,7 +72,14 @@ public class CenterService {
 		}
 		return -1;
 	}
-	
+	/**
+	 * <pre>
+	 * 센터 중복 체크
+	 * </pre>
+	 * @param centerName 센터명
+	 * @param postCode 우편번호
+	 * @return 이미 등록된 센터가 있으면 해당 센터의 인덱스 요소 번호, 없으면 -1
+	 */
 	public int exist(String centerName, String postCode) {
 		Center tmp = new Center();
 		for(int i = 0; i < getCount(); i++) {
@@ -94,15 +104,15 @@ public class CenterService {
 			br = new BufferedReader(new InputStreamReader(new FileInputStream(path), "UTF-8"));
 			while((line = br.readLine()) != null) {
 				String[] temp = line.split(","); 
-				////////////////////////////////////////////////////////////////////////////////
+				
 				String contact = null;
 				if(temp.length > 5) {
 					contact = temp[5];
 				}
+				
 				tempArrayList.add(temp[3]);
 				Center dto = new Center(temp[0], temp[1], temp[2], temp[3], temp[4], contact);
 				if(exist(dto) == -1) cenList.add(dto);				
-				//////////////////////////////////////////////////////////////////////////////////
 			}
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
@@ -116,10 +126,17 @@ public class CenterService {
 	 * 센터 등록 메서드
 	 * </pre>
 	 * @param dto 등록 센터
+	 * @return 성공시 true, 실패시 false
 	 */
-	public void addCenter(Center dto) {
-		if(exist(dto) == -1) cenList.add(dto);
-		else System.out.println("[오류] " + dto.getCenterName() + "는 이미 등록된 센터입니다");
+	public boolean addCenter(Center dto) {
+		if(exist(dto) == -1) {
+			cenList.add(dto);
+			return true;
+		}
+		else {
+			System.out.println("[오류] " + dto.getCenterName() + "는 이미 등록된 센터입니다");
+			return false;
+		}
 	}
 
 	/**
@@ -127,10 +144,10 @@ public class CenterService {
 	 * 센터 등록 메서드
 	 * -- 관리자 입력
 	 * </pre>
+	 * @return 성공시 true, 실패시 false
 	 */
-	public void addCenter() {
+	public boolean addCenter() {
 		Scanner sc = new Scanner(System.in);
-		UI ui = new UI();
 		String centerName, facName, postCode, district, address, contact;
 		int num;
 		
@@ -150,8 +167,8 @@ public class CenterService {
 		System.out.print("\n연락처 : "); contact = sc.next();
 		
 		Center dto = new Center(centerName, facName, postCode, district, address, contact);
-		if(exist(dto) == -1 )addCenter(dto);
-		else System.out.println("\n이미 등록된 센터입니다.");
+		
+		return addCenter(dto);
 	}
 	
 	/**
@@ -161,8 +178,8 @@ public class CenterService {
 	 * </pre>
 	 */
 	public void delCenter() {
+		Utility util = new Utility();
 		Scanner sc = new Scanner(System.in);
-		UI ui = new UI();
 		String centerName, postCode, yn;
 		
 		System.out.print("센터명 : "); centerName = sc.next();
@@ -171,19 +188,11 @@ public class CenterService {
 		int idx = exist(centerName, postCode);
 		if(idx >= 0) {
 			System.out.println(cenList.get(idx));
-			boolean close = false;
-			while(!close) {
-				System.out.print("위 정보를 삭제하시겠습니까?(Y/N) :"); yn = sc.next();
-				if(yn.equals("Y")) {
-					cenList.remove(idx);
-					System.out.println("정상적으로 삭제되었습니다.");
-					close = true;
-				} else if(yn.equals("N")) {
-					System.out.println("관리자 메뉴로 되돌아갑니다.");
-					close = true;
-				} else {
-					System.out.println("잘못 입력했습니다. Y 또는 N을 입력해주세요");
-				}
+			if(util.getAnswer("위 정보를 삭제하시겠습니까?")) {
+				cenList.remove(idx);
+				System.out.println("정상적으로 삭제되었습니다.");
+			} else {
+				System.out.println("관리자 메뉴로 되돌아갑니다.");
 			}
 		}
 	}
@@ -195,23 +204,13 @@ public class CenterService {
 	 * </pre>
 	 */
 	public void delAllCenter() {
-		Scanner sc = new Scanner(System.in);
-		UI ui = new UI();
-		String yn;
+		Utility util = new Utility();
 		
-		boolean close = false;
-		while(!close) {
-			System.out.print("전체 센터 정보를 삭제하시겠습니까?(Y/N) :"); yn = sc.next();
-			if(yn.equals("Y")) {
-				cenList.clear();
-				System.out.println("정상적으로 삭제되었습니다.");
-				close = true;
-			} else if(yn.equals("N")) {
-				System.out.println("관리자 메뉴로 되돌아갑니다.");
-				close = true;
-			} else {
-				System.out.println("잘못 입력했습니다. Y 또는 N을 입력해주세요");
-			}
+		if(util.getAnswer("전체 센터 정보를 삭제하시겠습니까?")) {
+			cenList.clear();
+			System.out.println("정상적으로 삭제되었습니다.");
+		} else {
+			System.out.println("관리자 메뉴로 되돌아갑니다.");
 		}
 	}
 	
@@ -222,11 +221,9 @@ public class CenterService {
 	 * </pre>
 	 */
 	public void reviseCenter() {
+		Utility util = new Utility();
 		Scanner sc = new Scanner(System.in);
-		UI ui = new UI();
 		String centerName, postCode, yn;
-		int num;
-		boolean close = false;
 		
 		System.out.print("센터명 : "); centerName = sc.next();
 		System.out.print("\n우편번호 : "); postCode = sc.next();
@@ -237,40 +234,18 @@ public class CenterService {
 			return;
 		}
 		
-		Center dto = new Center();
+		Center dto = cenList.get(idx);
 		System.out.println(dto);
 		
-		while(!close) {
-			System.out.println("위 센터의 정보를 수정하시겠습니까?(Y/N) : "); yn = sc.next();
-			if(yn.equals("Y")) {
-				System.out.print("센터명 : "); dto.setCenterName(sc.next());
-				System.out.print("\n시설명 : "); dto.setFacName(sc.next());
-				System.out.print("\n우편번호 : "); dto.setPostCode(sc.next());
-				
-				System.out.print("[ ");
-				for(int i = 0; i < districts.size(); i++) {
-					System.out.print((i+1) + ". " + districts.get(i) + "\t");
-				}
-				System.out.println("]");
-				System.out.print("지역 번호를 입력하세요 : "); num = sc.nextInt();
-				dto.setDistrict(districts.get(num - 1));
-				
-				System.out.print("\n주소 : "); dto.setAddress(sc.next());
-				System.out.print("\n연락처 : "); dto.setContact(sc.next());
-				
-				if(exist(dto) == -1 ) {
-					addCenter(dto);
-					System.out.println("\n정상적으로 수정되었습니다.");
-				} else {
-					System.out.println("\n[오류] 이미 등록된 센터입니다.");
-					close = true;
-				}
-			} else if(yn.equals("N")) {
-				System.out.println("관리자 메뉴로 되돌아갑니다.");
-				close = true;
+		if(util.getAnswer("위 센터의 정보를 수정하시겠습니까?")) {
+			cenList.remove(dto);
+			if(addCenter()) {
+				System.out.println("\n정상적으로 수정되었습니다.");
 			} else {
-				System.out.println("잘못 입력했습니다. Y 또는 N을 입력해주세요");
+				System.out.println("\n[오류] 이미 등록된 센터입니다.");
 			}
+		} else {
+			System.out.println("관리자 메뉴로 되돌아갑니다.");
 		}
 	}
 	
@@ -338,6 +313,7 @@ public class CenterService {
 	public void printCenterByDistrict(String district) {
 		Center dto = new Center();
 		int idx = 1;
+		
 		for(int i = 0; i < cenList.size(); i++) {
 			dto = cenList.get(i);
 			if(dto.getDistrict().equals(district)) {
@@ -365,11 +341,11 @@ public class CenterService {
 				System.out.println("[" + cnt++ + "] " + dto);
 			}
 		}
+		
 		if(cnt == 1) {
 			System.out.println("입력하신 키워드를 포함하는 센터 정보가 존재하지 않습니다.");
 		}
 	}
-	
 }
 
 

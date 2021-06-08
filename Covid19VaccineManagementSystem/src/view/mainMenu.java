@@ -1,12 +1,8 @@
-/**
- * 
- */
 package view;
 
 import java.text.ParseException;
 import java.util.Scanner;
 
-import model.service.MemberService;
 import util.UI;
 
 /**
@@ -24,6 +20,12 @@ public class mainMenu {
 		menu.showMain();
 	}
 	
+	/**
+	 * <pre>
+	 * 메인 메뉴
+	 * </pre>
+	 * @throws ParseException
+	 */
 	public void showMain() throws ParseException {
 		UI ui = new UI();
 		subMenu sm = new subMenu();
@@ -79,7 +81,4 @@ public class mainMenu {
 			}
 		}
 	}
-
-	
-	
 }
