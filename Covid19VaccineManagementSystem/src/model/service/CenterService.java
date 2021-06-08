@@ -36,11 +36,7 @@ public class CenterService {
 	
 	/** 기본생성자 : 초기 센터 등록 수행 */
 	public CenterService() {
-		//System.out.println("초기 센터 등록작업이 완료되었습니다");
 		readFile();
-//		for(int i = 0 ; i < districts.size(); i++ ) {
-//			System.out.println(districts.get(i));
-//		}
 	}
 	
 	
@@ -138,7 +134,6 @@ public class CenterService {
 		String centerName, facName, postCode, district, address, contact;
 		int num;
 		
-		ui.printSubMenu("센터 등록");
 		System.out.print("센터명 : "); centerName = sc.next();
 		System.out.print("\n시설명 : "); facName = sc.next();
 		System.out.print("\n우편번호 : "); postCode = sc.next();
@@ -170,7 +165,6 @@ public class CenterService {
 		UI ui = new UI();
 		String centerName, postCode, yn;
 		
-		ui.printSubMenu("센터 삭제");
 		System.out.print("센터명 : "); centerName = sc.next();
 		System.out.print("\n우편번호 : "); postCode = sc.next();
 		
@@ -205,8 +199,6 @@ public class CenterService {
 		UI ui = new UI();
 		String yn;
 		
-		ui.printSubMenu("센터 전체 삭제");
-
 		boolean close = false;
 		while(!close) {
 			System.out.print("전체 센터 정보를 삭제하시겠습니까?(Y/N) :"); yn = sc.next();
@@ -236,7 +228,6 @@ public class CenterService {
 		int num;
 		boolean close = false;
 		
-		ui.printSubMenu("센터 수정");
 		System.out.print("센터명 : "); centerName = sc.next();
 		System.out.print("\n우편번호 : "); postCode = sc.next();
 		
@@ -289,8 +280,9 @@ public class CenterService {
 	 * </pre>
 	 */
 	public void printAllCenter() {
+		System.out.println("등록 센터 수 : " + cenList.size());
 		for(int i = 0; i < cenList.size(); i++) {
-			System.out.println("[" + i + "] " + cenList.get(i));
+			System.out.println("[" + (i+1) + "] " + cenList.get(i));
 		}
 	}
 	
@@ -362,7 +354,7 @@ public class CenterService {
 	public void printCenterByKeywords() {
 		Scanner sc = new Scanner(System.in);
 		String keyword;
-		int cnt = 0;
+		int cnt = 1;
 		
 		System.out.print("조회하실 키워드를 입력하세요 : "); keyword = sc.next();
 		
@@ -373,7 +365,7 @@ public class CenterService {
 				System.out.println("[" + cnt++ + "] " + dto);
 			}
 		}
-		if(cnt == 0) {
+		if(cnt == 1) {
 			System.out.println("입력하신 키워드를 포함하는 센터 정보가 존재하지 않습니다.");
 		}
 	}

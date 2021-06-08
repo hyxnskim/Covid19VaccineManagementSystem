@@ -6,6 +6,7 @@ package view;
 import java.text.ParseException;
 import java.util.Scanner;
 
+import model.service.MemberService;
 import util.UI;
 
 /**
@@ -67,7 +68,7 @@ public class mainMenu {
 				sm.myInfoManagement();
 				break;
 			case 7:
-				
+				sm.adminMenu();
 				break;
 			case 0:
 				System.out.println("프로그램을 종료합니다.");

@@ -24,10 +24,12 @@ import util.UI;
  */
 public class subMenu {
 	UI ui = new UI();
+	Service service = new Service();
+	MemberService ms = new MemberService();
+	CenterService cs = new CenterService();
+	Scanner sc = new Scanner(System.in);
 	
 	public void printCurrentVac() throws ParseException {
-		Service service = new Service();
-		Scanner sc = new Scanner(System.in);
 		int num;
 
 		while(true) {
@@ -74,9 +76,6 @@ public class subMenu {
 	}
 	
 	public void verifyPrior() throws ParseException {
-		Service service = new Service();
-		CenterService cs = new CenterService();
-		Scanner sc = new Scanner(System.in);
 		String yn;
 		
 		ui.printSubMenu("우선접종 대상자 여부 확인");
@@ -102,8 +101,6 @@ public class subMenu {
 	}
 	
 	public void printCenter() {
-		Scanner sc = new Scanner(System.in);
-		CenterService cs = new CenterService();
 		int num;
 		
 		while(true) {
@@ -141,8 +138,6 @@ public class subMenu {
 	
 	
 	public void viewPeriod() throws ParseException {
-		Scanner sc = new Scanner(System.in);
-		MemberService ms = new MemberService();
 		String name, vacType, dateFirst;
 		String dateSecond, tmp, yn;
 		
@@ -178,9 +173,8 @@ public class subMenu {
 	}
 	
 	public void joinService() throws ParseException {
-		MemberService ms = new MemberService();
-		
 		ui.printSubMenu("2차 접종 알림 서비스 등록");
+		
 		if(ms.addMember()) {
 			System.out.println("등록 성공");
 		} else {
@@ -189,8 +183,6 @@ public class subMenu {
 	}
 	
 	public void myInfoManagement() throws ParseException {
-		MemberService ms = new MemberService();
-		Scanner sc = new Scanner(System.in);
 		String name, regiNum;
 		Member dto = new Member();
 		int num;
@@ -235,7 +227,131 @@ public class subMenu {
 		}
 	}
 	
+	public void adminMenu() throws ParseException {
+		String id, pw;
+		int num;
+		
+		System.out.print("관리자 아이디 : "); id = sc.next();
+		System.out.print("비밀번호 : "); pw = sc.next();
+		
+		if(!id.equals("admin") || !pw.equals("ad1234")) {
+			System.out.println("관리자 계정을 확인해주세요.");
+			System.out.println("메인 메뉴로 돌아갑니다.");
+			return;
+		}
+		
+		while(true) {
+			ui.printSubMenu("관리자 메뉴");
+			
+			System.out.println("1. 등록 회원 관리");
+			System.out.println("2. 센터 관리");
+			System.out.println("0. 돌아가기");
+			
+			System.out.print("사용하실 메뉴 번호를 입력하세요 : ");
+			num = sc.nextInt();
+			switch(num) {
+			case 1:
+				manageMember();
+				break;
+			case 2:
+				manageCenter();
+				break;
+			case 0:
+				System.out.println("메인 메뉴로 돌아갑니다.");
+				return;
+			default:
+				System.out.println("0~2 사이의 숫자를 입력하세요.");
+			}
+		}
+	}
 	
+	public void manageMember() throws ParseException {
+		int num;
+		
+		while(true) {
+			ui.printSubMenu("회원 관리");
+			
+			System.out.println("1. 등록 회원 전체 조회");
+			System.out.println("2. 신규 회원 등록");
+			System.out.println("3. 회원 정보 수정");
+			System.out.println("4. 회원 삭제");
+			System.out.println("5. 회원 전체 삭제");
+			System.out.println("0. 돌아가기");
+		
+			System.out.print("사용하실 메뉴 번호를 입력하세요 : ");
+			num = sc.nextInt();
+			switch(num) {
+			case 1:
+				ui.printSubSubMenu("등록 회원 전체 조회");
+				ms.printAllMember();
+				break;
+			case 2:
+				ui.printSubSubMenu("신규 회원 등록");
+				ms.addMember();
+				break;
+			case 3:
+				ui.printSubSubMenu("회원 정보 수정");
+				ms.reviseMember();
+				break;
+			case 4:
+				ui.printSubSubMenu("회원 삭제");
+				ms.delMember();
+				break;
+			case 5:
+				ui.printSubSubMenu("회원 전체 삭제");
+				ms.delAllMember();
+				break;
+			case 0:
+				System.out.println("이전 메뉴로 돌아갑니다.");
+				return;
+			default:
+				System.out.println("0~5 사이의 숫자를 입력하세요.");
+			}
+		}
+	}
 	
-	
+	public void manageCenter() {
+		int num;
+		
+		while(true) {
+			ui.printSubSubMenu("센터 관리");
+			
+			System.out.println("1. 등록 센터 전체 조회");
+			System.out.println("2. 신규 센터 등록");
+			System.out.println("3. 센터 정보 수정");
+			System.out.println("4. 센터 삭제");
+			System.out.println("5. 센터 전체 삭제");
+			System.out.println("0. 돌아가기");
+		
+			System.out.print("사용하실 메뉴 번호를 입력하세요 : ");
+			num = sc.nextInt();
+			switch(num) {
+			case 1:
+				ui.printSubSubMenu("등록 센터 전체 조회");
+				cs.printAllCenter();
+				break;
+			case 2:
+				ui.printSubSubMenu("신규 센터 등록");
+				cs.addCenter();
+				break;
+			case 3:
+				ui.printSubSubMenu("센터 정보 수정");
+				cs.reviseCenter();
+				break;
+			case 4:
+				ui.printSubSubMenu("센터 삭제");
+				cs.delCenter();
+				break;
+			case 5:
+				ui.printSubSubMenu("센터 전체 삭제");
+				cs.delAllCenter();
+				break;
+			case 0:
+				System.out.println("이전 메뉴로 돌아갑니다.");
+				return;
+			default:
+				System.out.println("0~5 사이의 숫자를 입력하세요.");
+			}
+		}
+	}
 }

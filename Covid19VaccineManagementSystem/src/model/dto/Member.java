@@ -202,23 +202,22 @@ public class Member {
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
-		builder.append("Member [name=");
+		builder.append("이름 : ");
 		builder.append(name);
-		builder.append(", regiNum=");
+		builder.append(", 주민등록번호 : ");
 		builder.append(regiNum);
-		builder.append(", contact=");
+		builder.append(", 연락처 : ");
 		builder.append(contact);
-		builder.append(", district=");
+		builder.append(", 거주지역 : ");
 		builder.append(district);
-		builder.append(", vacType=");
+		builder.append(", 접종 백신명 : ");
 		builder.append(vacType);
-		builder.append(", dateFirst=");
+		builder.append(", 1차 접종일 : ");
 		builder.append(dateFirst);
-		builder.append(", dateSecond=");
+		builder.append(", 2차 접종 예정일 : ");
 		builder.append(dateSecond);
-		builder.append(", notiDate=");
+		builder.append(", 2차 접종 알림 예정일 : ");
 		builder.append(notiDate);
-		builder.append("]");
 		return builder.toString();
 	}
 	

@@ -25,7 +25,8 @@ public class MemberService {
 	
 	public static void main(String[] args) throws ParseException {
 		MemberService ms = new MemberService();
-		ms.addMember();
+		ms.initMember();
+		ms.printAllMember();
 	}
 	
 	/** 회원들을 저장/관리하기 위한 자료 저장구조 */
@@ -37,8 +38,13 @@ public class MemberService {
 	 * <pre>
 	 * @throws ParseException 
 	 */
-	public MemberService() throws ParseException {
-		//System.out.println("초기 회원 등록작업이 완료되었습니다 : " + initMember());
+	public MemberService() {
+		try {
+			System.out.println("초기 회원 등록작업이 완료되었습니다 : " + initMember());
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 	/** 
@@ -80,14 +86,21 @@ public class MemberService {
 		Member dto2 = new Member("김진홍", "980828-1000000", "01089971463", "강원도", "화이자", "20210601");
 		Member dto3 = new Member("조춘웅", "420519-1000000", "01052535388", "경기도", "AZ", "20210604");
 		Member dto4 = new Member("김태재", "970530-1000000", "01093433384", "경상남도", "모더나", "20210602");
-		//Member dto5 = new Member("박승현", "971230-2000000", "01091639252", "충청북도", "얀센", "20210603");
+		Member dto5 = new Member("박승현", "971230-2000000", "01091639252", "충청북도", "AZ", "20210603");
 		addMember(dto1);
 		addMember(dto2);
 		addMember(dto3);
 		addMember(dto4);
-		//addMember(dto5);
+		addMember(dto5);
 		
 		return getCount();
+	}
+	
+	public void printAllMember() {
+		System.out.println("전체 회원 수 : " + memList.size());
+		for(int i = 0; i < memList.size(); i++) {
+			System.out.println("[" + (i+1) + "] " + memList.get(i));
+		}
 	}
 	
 	/**
@@ -168,9 +181,9 @@ public class MemberService {
 			if(period > 0) {
 				String date = addDate(dto.getDateFirst(), period);
 				dto.setDateSecond(date);
-				dto.setNotiDate(addDate(date, 3));
+				dto.setNotiDate(addDate(date, -3));
 				memList.add(dto);
-				//System.out.println("등록이 완료되었습니다.");
+				System.out.println("등록이 완료되었습니다.");
 				return true;
 			} else {
 				System.out.println("[오류] 입력한 백신 이름이 올바르지 않습니다");
@@ -312,9 +325,35 @@ public class MemberService {
 		String yn;
 		
 		while(!close) {
-			System.out.println("코로나 백신 2차 접종 알림 서비스를 해지하시겠습니까?(Y/N) : "); yn = sc.next();
+			System.out.print("코로나 백신 2차 접종 알림 서비스를 해지하시겠습니까?(Y/N) : "); yn = sc.next();
 			if(yn.equals("Y")) {
 				memList.remove(dto);
+				System.out.println("정상적으로 삭제되었습니다.");
+				close = true;
+			} else if(yn.equals("N")) {
+				System.out.println("이전 메뉴로 되돌아갑니다.");
+				close = true;
+			} else {
+				System.out.println("[오류] 입력 형식을 확인해주세요");
+			}
+		}
+	}
+	
+	/**
+	 * <pre>
+	 * 전체 회원 정보 삭제 메서드
+	 * -- 관리자용
+	 * </pre>
+	 */
+	public void delAllMember() {
+		Scanner sc = new Scanner(System.in);
+		boolean close = false;
+		String yn;
+		
+		while(!close) {
+			System.out.println("전체 회원 정보를 삭제하시겠습니까?(Y/N) : "); yn = sc.next();
+			if(yn.equals("Y")) {
+				memList.clear();
 				System.out.println("정상적으로 삭제되었습니다.");
 				close = true;
 			} else if(yn.equals("N")) {
