@@ -290,7 +290,7 @@ public class CenterService {
 	 */
 	public void printAllCenter() {
 		for(int i = 0; i < cenList.size(); i++) {
-			System.out.println(cenList.get(i));
+			System.out.println("[" + i + "] " + cenList.get(i));
 		}
 	}
 	
@@ -304,22 +304,27 @@ public class CenterService {
 		int num;
 		String district;
 		
-		System.out.print("[ ");
+		System.out.println("-----------------------");
 		for(int i = 0; i < districts.size(); i++) {
-			System.out.print((i+1) + ". " + districts.get(i) + "\t");
+			System.out.print((i+1) + ". " + districts.get(i) + "\n");
 		}
-		System.out.println("0. 종료 ]");
+		System.out.println("0. 종료");
+		System.out.println("-----------------------");
 		
 		boolean close = false;
 		while(!close) {
 			System.out.print("조회하실 지역 번호를 입력하세요 : "); num = sc.nextInt();
 			if(num > 0 && num < districts.size()) {
+				System.out.println("조회 결과 : ");
+				
 				district = districts.get(num-1);
 				Center dto = new Center();
+				int idx = 1;
+				
 				for(int i = 0; i < cenList.size(); i++) {
 					dto = cenList.get(i);
 					if(dto.getDistrict().equals(district)) {
-						System.out.println(dto);
+						System.out.println("[" + idx++ + "] " + dto);
 					}
 				}
 				close = true;
@@ -329,7 +334,6 @@ public class CenterService {
 			} else {
 				System.out.println("[오류] 잘못된 번호를 입력했습니다.");
 			}
-		
 		}
 	}
 	
@@ -341,10 +345,11 @@ public class CenterService {
 	 */
 	public void printCenterByDistrict(String district) {
 		Center dto = new Center();
+		int idx = 1;
 		for(int i = 0; i < cenList.size(); i++) {
 			dto = cenList.get(i);
 			if(dto.getDistrict().equals(district)) {
-				System.out.println(dto);
+				System.out.println("[" + idx++ + "] " + dto);
 			}
 		}
 	}
@@ -365,8 +370,7 @@ public class CenterService {
 		for(int i = 0; i < cenList.size(); i++) {
 			dto = cenList.get(i);
 			if(dto.getCenterName().contains(keyword) || dto.getFacName().contains(keyword) || dto.getAddress().contains(keyword)) {
-				System.out.println(dto);
-				cnt++;
+				System.out.println("[" + cnt++ + "] " + dto);
 			}
 		}
 		if(cnt == 0) {

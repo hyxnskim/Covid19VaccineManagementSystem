@@ -151,6 +151,38 @@ public class MemberService {
 		}
 	}
 	
+	public String inputVacType() {
+		Scanner sc = new Scanner(System.in);
+		String tmp;
+		boolean close = false;
+
+		while(!close) {
+			System.out.print("접종 백신 종류 (AZ/화이자/모더나): "); tmp = sc.next(); 
+			if(tmp.equals("AZ") || tmp.equals("화이자") || tmp.equals("모더나")) {
+				return tmp;
+			} else if(tmp.equals("얀센")) {
+				System.out.println("[알림] 얀센은 2차접종이 필요하지 않으므로 등록하지 않으셔도 됩니다.");
+				boolean close2 = false;
+				while(!close2) {
+					System.out.print("다른 백신으로 등록하시겠습니까? (Y/N) : ");
+					tmp = sc.next();
+					if(tmp.equals("Y")) {
+						close2 = true;
+					} else if(tmp.equals("N")) {
+						System.out.println("이전 메뉴로 되돌아갑니다.");
+						return null;
+					} else {
+						System.out.println("[오류] 잘못 입력하셨습니다.");
+					}
+				}
+			} else {
+				System.out.println("[오류] 입력하신 백신 이름이 올바르지 않습니다.");
+			}
+		}
+		return null;
+	}
+	
+	
 	/**
 	 * <pre>
 	 * 회원 둥록 메서드
@@ -160,14 +192,29 @@ public class MemberService {
 	 */
 	public boolean addMember() throws ParseException {
 		Scanner sc = new Scanner(System.in);
-		UI ui = new UI();
+		String name, vacType, dateFirst = null;
+		
+		System.out.print("이름 : "); name = sc.next();
+		vacType = inputVacType();
+		if(vacType == null) {
+			return false;
+		}
+		
+		System.out.print("1차 접종일 (형식 : 20210605) : "); dateFirst = sc.next();
+		
+		return addMember(name, vacType, dateFirst);
+	}
+	
+	public boolean addMember(String name, String vacType, String dateFirst) throws ParseException {
+		Scanner sc = new Scanner(System.in);
 		ArrayList<String> districts = new CenterService().getDistricts();
 		int num = 0;
-		
-		ui.printSubMenu("회원 정보 등록");
 		Member dto = new Member();
 		
-		System.out.print("이름 : "); dto.setName(sc.next());
+		dto.setName(name);
+		dto.setVacType(vacType);
+		dto.setDateFirst(dateFirst);
+		
 		System.out.print("주민번호 : "); dto.setRegiNum(sc.next());
 		System.out.print("연락처 (형식 : 01012341234) : "); dto.setContact(sc.next());
 		System.out.println("-------- "); 
@@ -187,47 +234,6 @@ public class MemberService {
 			}
 		}
 		dto.setDistrict(districts.get(num - 1));
-		
-		String tmp;
-		close = false;
-		while(!close) {
-			System.out.print("접종 백신 종류 (AZ/화이자/모더나): "); tmp = sc.next(); 
-			if(tmp.equals("AZ") || tmp.equals("화이자") || tmp.equals("모더나")) {
-				dto.setVacType(tmp);
-				close = true;
-			} else if(tmp.equals("얀센")) {
-				System.out.println("[알림] 얀센은 2차접종이 필요하지 않으므로 등록하지 않으셔도 됩니다.");
-				boolean close2 = false;
-				while(!close2) {
-					System.out.print("다른 백신으로 등록하시겠습니까? (Y/N) : ");
-					tmp = sc.next();
-					if(tmp.equals("Y")) {
-						close2 = true;
-					} else if(tmp.equals("N")) {
-						System.out.println("이전 메뉴로 되돌아갑니다.");
-						return false;
-					} else {
-						System.out.println("[오류] 잘못 입력하셨습니다.");
-					}
-				}
-			} else {
-				System.out.println("[오류] 입력하신 백신 이름이 올바르지 않습니다.");
-			}
-		
-		}
-		
-		close = false;
-		while(!close) {
-			System.out.print("1차 접종일 (형식 : 20210605) : ");
-			tmp = sc.next();
-			try {
-				Integer.parseInt(tmp);
-				dto.setDateFirst(sc.next()); 
-				close = true;
-			}catch (Exception e) {
-				System.out.println("[오류]입력 형식을 확인해주세요.");
-			}
-		}
 		
 		return addMember(dto);
 	}

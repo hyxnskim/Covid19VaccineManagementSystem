@@ -74,6 +74,7 @@ public class subMenu {
 	
 	public void verifyPrior() throws ParseException {
 		Service service = new Service();
+		CenterService cs = new CenterService();
 		Scanner sc = new Scanner(System.in);
 		String yn;
 		
@@ -85,17 +86,13 @@ public class subMenu {
 		}
 		
 		System.out.println("우선접종 대상자입니다.");
-		
 		while(true) {
-			System.out.println("2차 접종에 대한 알림을 재공하는 서비스에 가입하시겠습니까?(Y/N) : "); yn = sc.next();
+			System.out.print("근처 예방접종 센터 정보를 조회하시겠습니까? (Y/N) : "); yn = sc.next();
 			if(yn.equals("Y")) {
-				MemberService ms = new MemberService();
-				if(ms.addMember()) {
-					System.out.println("등록되었습니다.");
-				};
+				printCenter();
 				return;
 			} else if(yn.equals("N")) {
-				System.out.println("메인 메뉴로 되돌아갑니다.");
+				System.out.println("메인 메뉴로 돌아갑니다.");
 				return;
 			} else {
 				System.out.println("[오류] 입력 형식을 확인해주세요");
@@ -139,7 +136,48 @@ public class subMenu {
 				System.out.println("0~3 사이의 숫자를 입력하세요.");
 			}
 		}
-	
-		
 	}
+	
+	
+	public void viewPeriod() throws ParseException {
+		Scanner sc = new Scanner(System.in);
+		MemberService ms = new MemberService();
+		String name, vacType, dateFirst;
+		String dateSecond, tmp, yn;
+		
+		ui.printSubMenu("2차 접종 대기기간 조회");
+		
+		System.out.println("이름 : "); name = sc.next();
+		vacType = ms.inputVacType();
+		if(vacType == null) return;
+		System.out.println("1차 접종일(형식 : 20210608) : "); dateFirst = sc.next();
+		
+		dateSecond = ms.addDate(dateFirst, ms.findPeriod(vacType));
+		
+		SimpleDateFormat dtFormat = new SimpleDateFormat("yyyyMMdd");
+		Date dt = dtFormat.parse(dateSecond); 
+		tmp = new SimpleDateFormat("yyyy년 MM월 dd일").format(dt);
+		
+		System.out.println(name + "님의 " + vacType + " 백신 2차 접종일은 " + tmp + " 입니다.");
+		System.out.println("2차 접종 알림 서비스에 가입하시면 2차 접종일 3일 전에 알림을 받으실 수 있습니다.");
+		while(true) {
+			System.out.println("비스에 가입하시겠습니까?(Y/N) : "); yn = sc.next();
+			if(yn.equals("Y")) {
+				if(ms.addMember(name, vacType, dateFirst)) {
+					System.out.println("등록되었습니다.");
+				};
+				return;
+			} else if(yn.equals("N")) {
+				System.out.println("메인 메뉴로 돌아갑니다.");
+				return;
+			} else {
+				System.out.println("[오류] 입력 형식을 확인해주세요");
+			}
+		}
+	}
+	
+	
+	
+	
+	
 }

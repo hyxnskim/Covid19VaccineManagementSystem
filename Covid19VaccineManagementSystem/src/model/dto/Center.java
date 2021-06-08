@@ -184,19 +184,19 @@ public class Center {
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
-		builder.append("Center [centerName=");
 		builder.append(centerName);
-		builder.append(", facName=");
+		builder.append("//");
+		
 		builder.append(facName);
-		builder.append(", postCode=");
+		builder.append("//");
+		
 		builder.append(postCode);
-		builder.append(", district=");
-		builder.append(district);
-		builder.append(", address=");
+		builder.append("//");
+		
 		builder.append(address);
-		builder.append(", contact=");
+		builder.append("//");
+		
 		builder.append(contact);
-		builder.append("]");
 		return builder.toString();
 	}
 	

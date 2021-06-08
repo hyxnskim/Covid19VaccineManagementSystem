@@ -66,7 +66,11 @@ public class mainMenu {
 				sm.printCenter();
 				break;
 			case 4:
-				
+				try {
+					sm.viewPeriod();
+				} catch (ParseException e) {
+					e.printStackTrace();
+				}
 				break;
 			case 5:
 				
