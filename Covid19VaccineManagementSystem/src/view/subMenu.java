@@ -8,6 +8,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Scanner;
 
+import model.dto.Member;
 import model.service.CenterService;
 import model.service.MemberService;
 import model.service.Service;
@@ -147,10 +148,10 @@ public class subMenu {
 		
 		ui.printSubMenu("2차 접종 대기기간 조회");
 		
-		System.out.println("이름 : "); name = sc.next();
+		System.out.print("이름 : "); name = sc.next();
 		vacType = ms.inputVacType();
 		if(vacType == null) return;
-		System.out.println("1차 접종일(형식 : 20210608) : "); dateFirst = sc.next();
+		System.out.print("1차 접종일(형식 : 20210608) : "); dateFirst = sc.next();
 		
 		dateSecond = ms.addDate(dateFirst, ms.findPeriod(vacType));
 		
@@ -161,7 +162,7 @@ public class subMenu {
 		System.out.println(name + "님의 " + vacType + " 백신 2차 접종일은 " + tmp + " 입니다.");
 		System.out.println("2차 접종 알림 서비스에 가입하시면 2차 접종일 3일 전에 알림을 받으실 수 있습니다.");
 		while(true) {
-			System.out.println("비스에 가입하시겠습니까?(Y/N) : "); yn = sc.next();
+			System.out.print("서비스에 가입하시겠습니까?(Y/N) : "); yn = sc.next();
 			if(yn.equals("Y")) {
 				if(ms.addMember(name, vacType, dateFirst)) {
 					System.out.println("등록되었습니다.");
@@ -176,6 +177,63 @@ public class subMenu {
 		}
 	}
 	
+	public void joinService() throws ParseException {
+		MemberService ms = new MemberService();
+		
+		ui.printSubMenu("2차 접종 알림 서비스 등록");
+		if(ms.addMember()) {
+			System.out.println("등록 성공");
+		} else {
+			System.out.println("[오류] 등록 실패");
+		}
+	}
+	
+	public void myInfoManagement() throws ParseException {
+		MemberService ms = new MemberService();
+		Scanner sc = new Scanner(System.in);
+		String name, regiNum;
+		Member dto = new Member();
+		int num;
+		
+		System.out.print("이름 : "); name = sc.next();
+		System.out.print("주민등록번호 : "); regiNum = sc.next();
+		dto = ms.verifyMember(name, regiNum);
+		
+		if(dto == null) {
+			return;
+		}
+		
+		while(true) {
+			ui.printSubMenu("내 정보 관리");
+			
+			System.out.println("1. 내 정보 조회");
+			System.out.println("2. 내 정보 수정");
+			System.out.println("3. 서비스 등록 해지");
+			System.out.println("0. 돌아가기");
+			
+			System.out.print("사용하실 메뉴 번호를 입력하세요 : ");
+			num = sc.nextInt();
+			switch(num) {
+			case 1:
+				ui.printSubSubMenu("내 정보 조회");
+				System.out.println(dto);
+				break;
+			case 2:
+				ui.printSubSubMenu("내 정보 수정");
+				ms.reviseMember(dto);
+				break;
+			case 3:
+				ui.printSubMenu("서비스 등록 해지");
+				ms.delMember(dto);
+				break;
+			case 0:
+				System.out.println("메인 메뉴로 돌아갑니다.");
+				return;
+			default:
+				System.out.println("0~3 사이의 숫자를 입력하세요.");
+			}
+		}
+	}
 	
 	
 	

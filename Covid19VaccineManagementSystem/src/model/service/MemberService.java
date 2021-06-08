@@ -123,33 +123,6 @@ public class MemberService {
 		else return 0;
 	}
 	
-	/**
-	 * <pre>
-	 * 회원 등록 메서드
-	 * </pre>
-	 * @param dto 등록 회원
-	 * @throws ParseException 
-	 */
-	public boolean addMember(Member dto) throws ParseException {
-		if(exist(dto.getRegiNum()) == -1) {
-			int period = findPeriod(dto.getVacType());
-			if(period > 0) {
-				String date = addDate(dto.getDateFirst(), period);
-				dto.setDateSecond(date);
-				dto.setNotiDate(addDate(date, 3));
-				memList.add(dto);
-				//System.out.println("등록이 완료되었습니다.");
-				return true;
-			} else {
-				System.out.println("[오류] 입력한 백신 이름이 올바르지 않습니다");
-				return false;
-			}
-		}
-		else {
-			System.out.println("[오류] " + dto.getName() + "님은 이미 등록되었습니다.");
-			return false;
-		}
-	}
 	
 	public String inputVacType() {
 		Scanner sc = new Scanner(System.in);
@@ -182,6 +155,33 @@ public class MemberService {
 		return null;
 	}
 	
+	/**
+	 * <pre>
+	 * 회원 등록 메서드
+	 * </pre>
+	 * @param dto 등록 회원
+	 * @throws ParseException 
+	 */
+	public boolean addMember(Member dto) throws ParseException {
+		if(exist(dto.getRegiNum()) == -1) {
+			int period = findPeriod(dto.getVacType());
+			if(period > 0) {
+				String date = addDate(dto.getDateFirst(), period);
+				dto.setDateSecond(date);
+				dto.setNotiDate(addDate(date, 3));
+				memList.add(dto);
+				//System.out.println("등록이 완료되었습니다.");
+				return true;
+			} else {
+				System.out.println("[오류] 입력한 백신 이름이 올바르지 않습니다");
+				return false;
+			}
+		}
+		else {
+			System.out.println("[오류] " + dto.getName() + "님은 이미 등록되었습니다.");
+			return false;
+		}
+	}
 	
 	/**
 	 * <pre>
@@ -261,6 +261,7 @@ public class MemberService {
 	/**
 	 * <pre>
 	 * 사용자 정보 삭제 메서드
+	 * -- 관리자용
 	 * </pre>
 	 */
 	public void delMember() {
@@ -297,7 +298,32 @@ public class MemberService {
 				System.out.println("[오류] 입력 형식을 확인해주세요");
 			}
 		}
+	}
+	
+	/**
+	 * <pre>
+	 * 사용자 정보 삭제 메서드
+	 * -- 사용자용
+	 * </pre>
+	 */
+	public void delMember(Member dto) {
+		Scanner sc = new Scanner(System.in);
+		boolean close = false;
+		String yn;
 		
+		while(!close) {
+			System.out.println("코로나 백신 2차 접종 알림 서비스를 해지하시겠습니까?(Y/N) : "); yn = sc.next();
+			if(yn.equals("Y")) {
+				memList.remove(dto);
+				System.out.println("정상적으로 삭제되었습니다.");
+				close = true;
+			} else if(yn.equals("N")) {
+				System.out.println("이전 메뉴로 되돌아갑니다.");
+				close = true;
+			} else {
+				System.out.println("[오류] 입력 형식을 확인해주세요");
+			}
+		}
 	}
 	
 	/**
@@ -323,6 +349,12 @@ public class MemberService {
 			return;
 		}
 		
+		reviseMember(dto);
+	}
+	
+	public void reviseMember(Member dto) throws ParseException {
+		Scanner sc = new Scanner(System.in);
+		
 		System.out.println(dto);
 		
 		boolean close = false;
@@ -331,9 +363,13 @@ public class MemberService {
 			System.out.print("\n위 회원정보를 수정하겠습니까?(Y/N) : "); yn = sc.next();
 			if(yn.equals("Y")) {
 				memList.remove(dto);
-				addMember();
-				System.out.println("\n정상적으로 수정되었습니다.");
-				close = true;
+				if(addMember()) {
+					System.out.println("\n정상적으로 수정되었습니다.");
+					close = true;
+				} else {
+					System.out.println("\n이전 메뉴로 되돌아갑니다.");
+					close = true;
+				}
 			} else if(yn.equals("N")) {
 				System.out.println("\n이전 메뉴로 되돌아갑니다.");
 				close = true;

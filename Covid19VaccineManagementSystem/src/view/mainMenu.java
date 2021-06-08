@@ -18,12 +18,12 @@ import util.UI;
  */
 public class mainMenu {
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws ParseException {
 		mainMenu menu = new mainMenu();
 		menu.showMain();
 	}
 	
-	public void showMain() {
+	public void showMain() throws ParseException {
 		UI ui = new UI();
 		subMenu sm = new subMenu();
 		Scanner sc = new Scanner(System.in);
@@ -39,7 +39,7 @@ public class mainMenu {
 			System.out.println("2. 우선접종 대상자 여부 확인");
 			System.out.println("3. 예방접종센터 조회");
 			System.out.println("4. 2차 접종 대기기간 조회");
-			System.out.println("5. 백신 알림 서비스 가입");
+			System.out.println("5. 백신 알림 서비스 등록");
 			System.out.println("6. 내 정보 관리");
 			System.out.println("7. 관리자 메뉴");
 			System.out.println("0. 프로그램 종료");
@@ -49,34 +49,22 @@ public class mainMenu {
 			num = sc.nextInt();
 			switch(num) {
 			case 1:
-				try {
-					sm.printCurrentVac();
-				} catch (ParseException e) {
-					e.printStackTrace();
-				}
+				sm.printCurrentVac();
 				break;
 			case 2:
-				try {
-					sm.verifyPrior();
-				} catch (ParseException e) {
-					e.printStackTrace();
-				}		
+				sm.verifyPrior();
 				break;
 			case 3:
 				sm.printCenter();
 				break;
 			case 4:
-				try {
-					sm.viewPeriod();
-				} catch (ParseException e) {
-					e.printStackTrace();
-				}
+				sm.viewPeriod();
 				break;
 			case 5:
-				
+				sm.joinService();
 				break;
 			case 6:
-				
+				sm.myInfoManagement();
 				break;
 			case 7:
 				
