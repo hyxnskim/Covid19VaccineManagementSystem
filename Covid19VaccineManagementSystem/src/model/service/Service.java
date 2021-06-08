@@ -69,25 +69,6 @@ public class Service {
     	}
     }
     
-//    /**
-//	 * <pre>
-//	 * 날짜 계산 메서드
-//	 * </pre>
-//	 * @param strDate 기준일
-//	 * @param day 더할 일 수
-//	 * @return 기준일이 day만큼 더해진 날짜
-//	 * @throws ParseException
-//	 */
-//	public String addDate(String strDate, int day) throws ParseException { 
-//		SimpleDateFormat dtFormat = new SimpleDateFormat("yyyyMMdd"); 
-//		Calendar cal = Calendar.getInstance(); 
-//		Date dt = dtFormat.parse(strDate); 
-//		cal.setTime(dt); 
-//
-//		cal.add(Calendar.DATE, day); 
-//		return dtFormat.format(cal.getTime()); 
-//	}
-    
     /**
      * <pre>
      * 우선접종 대상자 식별 메서드

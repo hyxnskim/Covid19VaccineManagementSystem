@@ -75,10 +75,10 @@ public class MemberService {
 	public int initMember() throws ParseException {
 		
 		Member dto1 = new Member("김현수", "970620-2000000", "01063886503", "서울특별시", "화이자", "20210531");	//20210531 20210523 20210513
-		Member dto2 = new Member("김진홍", "980828-1000000", "01089971463", "강원도", "화이자", "20210601");
+		Member dto2 = new Member("김진홍", "980828-1000000", "01089971463", "강원도", "화이자", "20210519");
 		Member dto3 = new Member("조춘웅", "420519-1000000", "01052535388", "경기도", "AZ", "20210604");
 		Member dto4 = new Member("김태재", "970530-1000000", "01093433384", "경상남도", "모더나", "20210602");
-		Member dto5 = new Member("박승현", "971230-2000000", "01091639252", "충청북도", "AZ", "20210603");
+		Member dto5 = new Member("박승현", "971230-2000000", "01091639252", "충청북도", "AZ", "20210303");
 		addMember(dto1);
 		addMember(dto2);
 		addMember(dto3);
@@ -362,16 +362,73 @@ public class MemberService {
 	public void reviseMember(Member dto) throws ParseException {
 		Utility util = new Utility();
 		Scanner sc = new Scanner(System.in);
+		ArrayList<String> districts = new CenterService().getDistricts();
+		int num;
 		
 		System.out.println(dto);
 		
-		if(util.getAnswer("위 회원정보를 수정하겠습니까?")) {
-			memList.remove(dto);
-			if(addMember()) {
-				System.out.println("\n정상적으로 수정되었습니다.");
-			}
-		} else {
+		if(!util.getAnswer("위 회원정보를 수정하겠습니까?")) {
 			System.out.println("\n이전 메뉴로 되돌아갑니다.");
+		}
+		
+		System.out.println("-------------------");
+		System.out.println("1. 전화번호");
+		System.out.println("2. 거주 지역");
+		System.out.println("3. 접종 백신 종류");
+		System.out.println("4. 1차 접종일");
+		System.out.println("0. 돌아가기");
+		System.out.println("-------------------");
+		System.out.print("수정할 항목을 선택하세요 : "); num = sc.nextInt();
+		
+		while(true) {
+			switch(num){
+				case 1:
+					System.out.print("수정할 전화번호 : ");
+					dto.setContact(sc.next());
+					System.out.println("수정되었습니다.");
+					return;
+				case 2:
+					System.out.println("-------- "); 
+					for(int i = 0; i < districts.size(); i++) {
+						System.out.printf("%d. %s\n", i+1, districts.get(i));
+					}
+					System.out.println("-------");
+					
+					boolean close = false;
+					while(!close) {
+						System.out.print("거주지역을 선택하세요 : ");  num = sc.nextInt();
+						if(num > 0 && num <= districts.size()) {
+							dto.setDistrict(districts.get(num - 1));
+							close = true;
+						} else {
+							System.out.println("[오류] 1 ~ " + districts.size() + " 사이의 숫자를 입력하세요");
+						}
+					}
+					dto.setDistrict(districts.get(num - 1));
+					System.out.println("수정되었습니다.");
+					return;
+				case 3:
+					dto.setVacType(inputVacType());
+					System.out.println("수정되었습니다.");
+					return;
+				case 4:
+					System.out.print("1차 접종일 (형식 : 20210608) : ");
+					dto.setDateFirst(sc.next());
+					
+					int period = findPeriod(dto.getVacType());
+					String date = util.addDate(dto.getDateFirst(), period);
+					
+					dto.setDateSecond(date);
+					dto.setNotiDate(util.addDate(date, -3));
+					System.out.println("수정되었습니다.");
+					return;
+				case 0:
+					System.out.println("이전 메뉴로 돌아갑니다.");
+					return;
+				default:
+					System.out.println("0~4 사이의 숫자를 입력하세요");
+					
+			}
 		}
 	}
 	

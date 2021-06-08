@@ -281,7 +281,7 @@ public class CenterService {
 		boolean close = false;
 		while(!close) {
 			System.out.print("조회하실 지역 번호를 입력하세요 : "); num = sc.nextInt();
-			if(num > 0 && num < districts.size()) {
+			if(num > 0 && num <= districts.size()) {
 				System.out.println("조회 결과 : ");
 				
 				district = districts.get(num-1);

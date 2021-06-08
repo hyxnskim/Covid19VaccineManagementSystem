@@ -21,7 +21,7 @@ import util.Utility;
  * @version ver.1.0
  * @since jdk1.8
  */
-public class subMenu {
+public class SubMenu {
 	UI ui = new UI();
 	Service service = new Service();
 	MemberService ms = new MemberService();
