@@ -30,6 +30,12 @@ public class CenterDao {
 		return instance;
 	}
 	
+	/**
+	 * <pre>
+	 * 등록된 센터 개수 조회
+	 * </pre>
+	 * @return 등록된 센터 개수
+	 */
 	public int selectCount() {
 		Connection conn = null;
 		PreparedStatement stmt = null;
@@ -54,7 +60,13 @@ public class CenterDao {
 		return 0;
 	}
 	
-
+	/**
+	 * <pre>
+	 * 센터 정보 삽입
+	 * </pre>
+	 * @param dto 삽입할 센터 객체
+	 * @return 성공시 true, 실패시 false
+	 */
 	public boolean insertCenterInfo(Center dto) {
 		Connection conn = null;
 		PreparedStatement stmt = null;
@@ -86,6 +98,12 @@ public class CenterDao {
 		return false;
 	}
 	
+	/**
+	 * <pre>
+	 * 지역 조회
+	 * <pre>
+	 * @return 지역 정보가 저장된 ArrayList
+	 */
 	public ArrayList<String> selectDistrict() {
 		ArrayList<String> districts = new ArrayList<String>();
 		Connection conn = null;
@@ -114,6 +132,13 @@ public class CenterDao {
 		return null;
 	}
 	
+	/**
+	 * <pre>
+	 * 센터 정보 조회(중복체크)
+	 * </pre>
+	 * @param dto 대상 센터 객체
+	 * @return 중복된 센터가 존재하면 true, 그렇지 않으면 false
+	 */
 	public boolean selectCenterInfo(Center dto) {
 		Connection conn = null;
 		PreparedStatement stmt = null;
@@ -141,6 +166,14 @@ public class CenterDao {
 		return false;
 	}
 	
+	/**
+	 * <pre>
+	 * 센터 정보 조회(중복체크)
+	 * </pre>
+	 * @param centerName 센터명
+	 * @param facName 시설명
+	 * @return 중복된 센터가 존재하면 true, 그렇지 않으면 false
+	 */
 	public boolean selectCenterInfo(String centerName, String facName) {
 		Connection conn = null;
 		PreparedStatement stmt = null;
@@ -168,6 +201,14 @@ public class CenterDao {
 		return false;
 	}
 	
+	/**
+	 * <pre>
+	 * 특정 센터 정보 조회
+	 * </pre>
+	 * @param centerName 센터명
+	 * @param facName 시설명
+	 * @return 조회한 센터 객체
+	 */
 	public Center selectOne(String centerName, String facName) {
 		Connection conn = null;
 		PreparedStatement stmt = null;
@@ -202,6 +243,12 @@ public class CenterDao {
 		return dto;
 	}
 	
+	/**
+	 * <pre>
+	 * 전체 센터 조회
+	 * </pre>
+	 * @return 전체 센터 객체가 저장된 ArrayList
+	 */
 	public ArrayList<Center> selectAll() {
 		Connection conn = null;
 		PreparedStatement stmt = null;
@@ -236,6 +283,13 @@ public class CenterDao {
 		return cenList;
 	}
 	
+	/**
+	 * <pre>
+	 * 지역별 센터 조회
+	 * </pre>
+	 * @param district 지역
+	 * @return 조회결과
+	 */
 	public ArrayList<Center> selectByDistrict(String district) {
 		Connection conn = null;
 		PreparedStatement stmt = null;
@@ -271,6 +325,13 @@ public class CenterDao {
 		return cenList;
 	}
 	
+	/**
+	 * <pre>
+	 * 키워드로 센터 조회
+	 * </pre>
+	 * @param keyword 검색 키워드
+	 * @return 조회 결과
+	 */
 	public ArrayList<Center> selectByKeyword(String keyword) {
 		Connection conn = null;
 		PreparedStatement stmt = null;
@@ -309,6 +370,14 @@ public class CenterDao {
 		return cenList;
 	}
 	
+	/**
+	 * <pre>
+	 * 특정 센터 정보 삭제
+	 * </pre>
+	 * @param centerName 센터명
+	 * @param facName 시설명
+	 * @return 성공시 true, 실패시 false
+	 */
 	public boolean deleteOne(String centerName, String facName) {
 		Connection conn = null;
 		PreparedStatement stmt = null;
@@ -337,6 +406,12 @@ public class CenterDao {
 		return false;
 	}
 	
+	/**
+	 * <pre>
+	 * 전체 센터 정보 삭제
+	 * </pre>
+	 * @return 성공시 true, 실패시 false
+	 */
 	public boolean deleteAll() {
 		Connection conn = null;
 		PreparedStatement stmt = null;

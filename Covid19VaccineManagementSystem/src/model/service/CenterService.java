@@ -239,7 +239,9 @@ public class CenterService {
 		
 		System.out.println("-----------------------");
 		for(int i = 0; i < districts.size(); i++) {
-			System.out.print((i+1) + ". " + districts.get(i) + "\n");
+			System.out.print((i+1) + ". " + districts.get(i) + "\t");
+			if(districts.get(i).equals("강원도")) System.out.print("\t");
+			if(i%3==2) System.out.println();
 		}
 		System.out.println("0. 종료");
 		System.out.println("-----------------------");
@@ -278,7 +280,7 @@ public class CenterService {
 		int idx = 1;
 		
 		for(int i = 0; i < cenList.size(); i++) {
-			System.out.println("[" + idx++ + "] " + cenList.get(i));
+			System.out.print("[" + idx++ + "] " + cenList.get(i));
 		}
 	}
 	

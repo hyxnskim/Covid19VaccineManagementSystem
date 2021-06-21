@@ -31,9 +31,9 @@ public class Utility {
     	
     	while(!close) {
     		System.out.print(question + " (Y/N) : "); answer = sc.next();
-    		if(answer.equals("Y")) {
+    		if(answer.equals("Y") || answer.equals("y")) {
     			return true;
-    		} else if (answer.equals("N")) {
+    		} else if (answer.equals("N") || answer.equals("n")) {
     			return false;
     		} else {
     			System.out.println("입력 형식이 올바르지 않습니다.");

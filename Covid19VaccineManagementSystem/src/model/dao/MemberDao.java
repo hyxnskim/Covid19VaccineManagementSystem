@@ -29,6 +29,13 @@ public class MemberDao {
 		return instance;
 	}
 	
+	/**
+	 * <pre>
+	 * 멤버 정보 삽입 메서드
+	 * </pre>
+	 * @param dto 삽입할 맴버 객체
+	 * @return 성공시 true, 실패시 false
+	 */
 	public boolean insertMemberInfo(Member dto) {
 		Connection conn = null;
 		PreparedStatement stmt = null;
@@ -62,6 +69,12 @@ public class MemberDao {
 		return false;
 	}
 	
+	/**
+	 * <pre>
+	 * 등록 회원 수 조회 메서드
+	 * </pre>
+	 * @return 등록 회원수
+	 */
 	public int selectCount() {
 		Connection conn = null;
 		PreparedStatement stmt = null;
@@ -86,6 +99,13 @@ public class MemberDao {
 		return 0;
 	}
 	
+	/**
+	 * <pre>
+	 * 주민번호 중복 검사 메서드
+	 * </pre>
+	 * @param regiNum 중복 검사할 주민번호
+	 * @return 이미 존재하는 주민번호면 true, 그렇지 않으면 false
+	 */
 	public boolean selectRegiNum(String regiNum) {
 		Connection conn = null;
 		PreparedStatement stmt = null;
@@ -114,6 +134,12 @@ public class MemberDao {
 		return false;
 	}
 	
+	/**
+	 * <pre>
+	 * 전체 회원정보 조회 메서드
+	 * </pre>
+	 * @return 전체 회원 객체가 저장된 ArrayList
+	 */
 	public ArrayList<Member> selectAll(){
 		Connection conn = null;
 		PreparedStatement stmt = null;
@@ -150,6 +176,14 @@ public class MemberDao {
 		return memList;
 	}
 	
+	/**
+	 * <pre>
+	 * 특정 회원 정보 조회 메서드
+	 * </pre>
+	 * @param name 이름
+	 * @param regiNum 주민번호
+	 * @return 조회한 회원 객체
+	 */
 	public Member selectOne(String name, String regiNum) {
 		Connection conn = null;
 		PreparedStatement stmt = null;
@@ -186,6 +220,13 @@ public class MemberDao {
 		return dto;
 	}
 	
+	/**
+	 * <pre>
+	 * 특정 회원 정보 삭제
+	 * </pre>
+	 * @param dto 삭제할 회원 객체
+	 * @return 성공시 true, 실패시 false
+	 */
 	public boolean deleteOne(Member dto) {
 		Connection conn = null;
 		PreparedStatement stmt = null;
@@ -214,6 +255,12 @@ public class MemberDao {
 		return false;
 	}
 	
+	/**
+	 * <pre>
+	 * 전체 회원정보 삭제
+	 * </pre>
+	 * @return 성공시 true, 실패시 false
+	 */
 	public boolean deleteAll() {
 		Connection conn = null;
 		PreparedStatement stmt = null;

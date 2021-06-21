@@ -187,11 +187,13 @@ public class MemberService {
 		
 		System.out.print("주민번호 : "); dto.setRegiNum(sc.next());
 		System.out.print("연락처 (형식 : 01012341234) : "); dto.setContact(sc.next());
-		System.out.println("-------- "); 
+		System.out.println("----------------------------"); 
 		for(int i = 0; i < districts.size(); i++) {
-			System.out.printf("%d. %s\n", i+1, districts.get(i));
+			System.out.print((i+1) + ". " + districts.get(i) + "\t");
+			if(districts.get(i).equals("강원도")) System.out.print("\t");
+			if(i%3==2) System.out.println();
 		}
-		System.out.println("-------");
+		System.out.println("\n---------------------------");
 		
 		boolean close = false;
 		while(!close) {
