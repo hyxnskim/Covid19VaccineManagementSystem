@@ -36,6 +36,7 @@ public class SubMenu {
 	 * @throws ParseException
 	 */
 	public void printCurrentVac() throws ParseException {
+		Utility util = new Utility();
 		int num;
 
 		while(true) {
@@ -55,15 +56,24 @@ public class SubMenu {
 				break;
 				
 			case 2:
-				int sdate, edate;
+				String sdate, edate;
 				ui.printSubSubMenu("날짜별 검색");
 				System.out.println("시작일과 종료일을 입력하세요. (형식 : 20210607)");
-				System.out.print("시작일 : "); sdate = sc.nextInt();
-				System.out.print("종료일 : "); edate = sc.nextInt();
+				
+				while(true) {
+					sdate = util.inputDate("시작일");
+					if(util.isDateInRange(sdate)) break;
+				}
+				
+				while(true) {
+					edate = util.inputDate("종료일");
+					if(util.isDateInRange(edate)) break;
+				}
+
 				
 				String tmp;
-				for(int i = 0; i < edate - sdate + 1; i++) {
-					tmp = util.addDate(Integer.toString(sdate), i);
+				for(int i = 0; i < Integer.parseInt(sdate) - Integer.parseInt(sdate) + 1; i++) {
+					tmp = util.addDate(sdate, i);
 					SimpleDateFormat dtFormat = new SimpleDateFormat("yyyyMMdd");
 					Date dt = dtFormat.parse(tmp); 
 					
@@ -162,6 +172,7 @@ public class SubMenu {
 	 * @throws ParseException
 	 */
 	public void viewPeriod() throws ParseException {
+		Utility util = new Utility();
 		String name, vacType, dateFirst;
 		String dateSecond, tmp, yn;
 		
@@ -170,8 +181,8 @@ public class SubMenu {
 		System.out.print("이름 : "); name = sc.next();
 		vacType = ms.inputVacType();
 		if(vacType == null) return;
-		System.out.print("1차 접종일(형식 : 20210608) : "); dateFirst = sc.next();
 		
+		dateFirst = util.inputDate("1차 접종일(형식 : 20210608)");
 		dateSecond = util.addDate(dateFirst, ms.findPeriod(vacType));
 		
 		SimpleDateFormat dtFormat = new SimpleDateFormat("yyyyMMdd");

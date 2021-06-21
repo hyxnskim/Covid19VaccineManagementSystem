@@ -27,6 +27,8 @@ public class MemberService {
 	/** MemberDao 객체 */
 	private MemberDao dao = MemberDao.getInstance();
 	
+	Scanner sc = new Scanner(System.in);
+	
 	/** 
 	 * <pre>
 	 * 기본생성자
@@ -90,7 +92,7 @@ public class MemberService {
 	 * @return 성공시 백신 이름, 실패시 null
 	 */
 	public String inputVacType() {
-		Scanner sc = new Scanner(System.in);
+		//Scanner sc = new Scanner(System.in);
 		Utility util = new Utility();
 		String tmp;
 		boolean close = false;
@@ -150,7 +152,7 @@ public class MemberService {
 	 * @throws ParseException 
 	 */
 	public boolean addMember() throws ParseException {
-		Scanner sc = new Scanner(System.in);
+		Utility util = new Utility();
 		String name, vacType, dateFirst = null;
 		
 		System.out.print("이름 : "); name = sc.next();
@@ -158,8 +160,7 @@ public class MemberService {
 		if(vacType == null) {
 			return false;
 		}
-		
-		System.out.print("1차 접종일 (형식 : 20210605) : "); dateFirst = sc.next();
+		dateFirst = util.inputDate("1차 접종일 (형식 : 20210605)");
 		
 		return addMember(name, vacType, dateFirst);
 	}
@@ -176,7 +177,7 @@ public class MemberService {
 	 * @throws ParseException
 	 */
 	public boolean addMember(String name, String vacType, String dateFirst) throws ParseException {
-		Scanner sc = new Scanner(System.in);
+		//Scanner sc = new Scanner(System.in);
 		ArrayList<String> districts = new CenterService().getDistricts();
 		int num = 0;
 		Member dto = new Member();
@@ -185,8 +186,11 @@ public class MemberService {
 		dto.setVacType(vacType);
 		dto.setDateFirst(dateFirst);
 		
-		System.out.print("주민번호 : "); dto.setRegiNum(sc.next());
-		System.out.print("연락처 (형식 : 01012341234) : "); dto.setContact(sc.next());
+		String regiNum = inputRegiNum();
+		if(regiNum != null) dto.setRegiNum(regiNum);
+		else return false;
+		
+		dto.setContact(inputContact());
 		System.out.println("----------------------------"); 
 		for(int i = 0; i < districts.size(); i++) {
 			System.out.print((i+1) + ". " + districts.get(i) + "\t");
@@ -208,6 +212,85 @@ public class MemberService {
 		dto.setDistrict(districts.get(num - 1));
 		
 		return addMember(dto);
+	}
+	
+	/**
+	 * <pre>
+	 * 주민번호 입력 메서드
+	 * </pre>
+	 * @return 입력받은 주민번호
+	 */
+	public String inputRegiNum() {
+		Utility util = new Utility();
+		int flag;
+		String tmp;
+		
+		while(true) {
+			flag = 0;
+			System.out.print("주민번호 : "); 
+			tmp = sc.next();
+			
+			if(tmp.length() == 14) {
+				for(int i = 0; i < tmp.length(); i++) {
+					if(i == 6) {
+						if(tmp.charAt(i) == '-') continue;
+						else {
+							flag = 1;
+							break;
+						}
+					} 
+					if(tmp.charAt(i) >= '0' && tmp.charAt(i) <= '9') continue;
+					else{
+						flag = 1;
+						break;
+					}
+				}
+			} else {
+				flag = 1;
+			}
+			if(flag == 0) {
+				if(dao.selectRegiNum(tmp)) {
+					System.out.println("[오류] 이미 등록된 주민등록번호입니다.");
+					if(!util.getAnswer("계속 등록하시겠습니까?")) return null;
+				}
+				else break;
+			}
+			else{
+				System.out.println("[오류] 주민등록번호 입력 형식은 앞6자리-뒷7자리 입니다.");
+			}
+		}
+		return tmp;
+	}
+	
+	/**
+	 * 전화번호 입력 메서드
+	 * </pre>
+	 * @return 입력받은 전화번호
+	 */
+	public String inputContact() {
+		int flag;
+		String tmp;
+		
+		while(true) {
+			flag = 0;
+			System.out.print("연락처 (형식 : 01012341234) : "); 
+			tmp = sc.next();
+			
+			if(tmp.length() == 11) {
+				for(int i = 0; i < tmp.length(); i++) {
+					if(tmp.charAt(i) >= '0' && tmp.charAt(i) <= '9') continue;
+					else{
+						flag = 1;
+						break;
+					}
+				}
+			} else {
+				flag = 1;
+			}
+			if(flag == 0) break;
+			else System.out.println("[오류] 입력 형식을 확인해주세요");
+		}
+		return tmp;
 	}
 	
 	/**
@@ -236,7 +319,7 @@ public class MemberService {
 	 */
 	public void delMember() {
 		Utility util = new Utility();
-		Scanner sc = new Scanner(System.in);
+		//Scanner sc = new Scanner(System.in);
 		String name, regiNum;
 		
 		System.out.print("이름 : "); name = sc.next();
@@ -303,7 +386,7 @@ public class MemberService {
 	 * @throws ParseException
 	 */
 	public void reviseMember() throws ParseException {
-		Scanner sc = new Scanner(System.in);
+		//Scanner sc = new Scanner(System.in);
 		String name, regiNum;
 		
 		System.out.print("이름 : "); name = sc.next();
@@ -330,7 +413,7 @@ public class MemberService {
 	 */
 	public void reviseMember(Member dto) throws ParseException {
 		Utility util = new Utility();
-		Scanner sc = new Scanner(System.in);
+		//Scanner sc = new Scanner(System.in);
 		ArrayList<String> districts = new CenterService().getDistricts();
 		int num;
 		
@@ -413,7 +496,7 @@ public class MemberService {
 	 * @throws ParseException
 	 */
 	public void notification(Member dto) throws ParseException {
-		Scanner sc = new Scanner(System.in);
+		//Scanner sc = new Scanner(System.in);
 		
 		String today = new SimpleDateFormat("yyyyMMdd").format(new Date());
 		String second = dto.getDateSecond();
