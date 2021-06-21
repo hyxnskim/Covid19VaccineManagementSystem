@@ -26,9 +26,6 @@ public class CenterService {
 	/** CenterDao 객체 */
 	private CenterDao dao = CenterDao.getInstance();
 	
-	/** 센터들을 저장/관리하기 위한 자료 저장구조 */
-	//private ArrayList<Center> cenList = new ArrayList<Center>();
-	
 	/** 중복을 제거한 지역을 저장하기 위한 자료 저장구조 */
 	private ArrayList<String> districts = new ArrayList<String>();
 	

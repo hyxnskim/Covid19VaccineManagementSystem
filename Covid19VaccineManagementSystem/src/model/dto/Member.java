@@ -64,6 +64,25 @@ public class Member {
 		this.vacType = vacType;
 		this.dateFirst = dateFirst;
 	}
+	
+	/**
+	 * <pre>
+	 * 전체 정보 입력 생성자
+	 * </pre>
+	 * @param name 이름
+	 * @param regiNum 주민번호
+	 * @param contact 연락처
+	 * @param district 지역
+	 * @param vacType 접종 백신 종료
+	 * @param dateFirst 1차 접종일
+	 * @param dateSecond 2차 접종일
+	 * @param notiDate 2차 접종 예정 알림일
+	 */
+	public Member(String name, String regiNum, String contact, String district, String vacType, String dateFirst, String dateSecond, String notiDate) {
+		this(name, regiNum, contact, district, vacType, dateFirst);
+		this.dateSecond = dateSecond;
+		this.notiDate = notiDate;
+	}
 
 	/**
 	 * @return the name

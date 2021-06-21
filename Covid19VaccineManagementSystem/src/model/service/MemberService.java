@@ -9,6 +9,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.Scanner;
 
+import model.dao.CenterDao;
+import model.dao.MemberDao;
 import model.dto.Member;
 import util.Utility;
 
@@ -22,22 +24,16 @@ import util.Utility;
  */
 public class MemberService {
 	
-	/** 회원들을 저장/관리하기 위한 자료 저장구조 */
-	private ArrayList<Member> memList = new ArrayList<Member>();
+	/** MemberDao 객체 */
+	private MemberDao dao = MemberDao.getInstance();
 	
 	/** 
 	 * <pre>
-	 * 기본생성자 : 초기화 회원 등록 수행 
+	 * 기본생성자
 	 * <pre>
 	 * @throws ParseException 
 	 */
-	public MemberService() {
-		try {
-			initMember();
-		} catch (ParseException e) {
-			e.printStackTrace();
-		}
-	}
+	public MemberService() {}
 	
 	/** 
 	 * <pre>
@@ -46,7 +42,7 @@ public class MemberService {
 	 * @return 현재 등록자수
 	 */
 	public int getCount() {
-		return memList.size();
+		return dao.selectCount();
 	}
 	
 	/**
@@ -54,38 +50,10 @@ public class MemberService {
 	 * 회원 중복 체크
 	 * </pre>
 	 * @param regiNum 주민등록번호
-	 * @return 존재시에 저장위치 번호, 존재하지 않으면 -1
+	 * @return 존재시에 true, 존재하지 않으면 false
 	 */
-	public int exist(String regiNum) {
-		for(int i = 0; i < getCount(); i++) {
-			if(regiNum.equals((memList.get(i)).getRegiNum())) {
-				return i;
-			}
-		}
-		return -1;
-	}
-	
-	/**
-	 * <pre>
-	 * 테스트를 위한 회원 초기화 등록 메서드
-	 * </pre>
-	 * @return 초기화 회원등록 인원수
-	 * @throws ParseException 
-	 */
-	public int initMember() throws ParseException {
-		
-		Member dto1 = new Member("김현수", "970620-2000000", "01063886503", "서울특별시", "화이자", "20210531");	//20210531 20210523 20210513
-		Member dto2 = new Member("김진홍", "980828-1000000", "01089971463", "강원도", "화이자", "20210519");
-		Member dto3 = new Member("조춘웅", "420519-1000000", "01052535388", "경기도", "AZ", "20210604");
-		Member dto4 = new Member("김태재", "970530-1000000", "01093433384", "경상남도", "모더나", "20210602");
-		Member dto5 = new Member("박승현", "971230-2000000", "01091639252", "충청북도", "AZ", "20210303");
-		addMember(dto1);
-		addMember(dto2);
-		addMember(dto3);
-		addMember(dto4);
-		addMember(dto5);
-		
-		return getCount();
+	public boolean exist(String regiNum) {
+		return dao.selectRegiNum(regiNum);
 	}
 	
 	/**
@@ -94,6 +62,7 @@ public class MemberService {
 	 * </pre>
 	 */
 	public void printAllMember() {
+		ArrayList<Member> memList = dao.selectAll();
 		System.out.println("전체 회원 수 : " + memList.size());
 		for(int i = 0; i < memList.size(); i++) {
 			System.out.println("[" + (i+1) + "] " + memList.get(i));
@@ -152,14 +121,14 @@ public class MemberService {
 	 */
 	public boolean addMember(Member dto) throws ParseException {
 		
-		if(exist(dto.getRegiNum()) == -1) {
+		if(!exist(dto.getRegiNum())) {
 			int period = findPeriod(dto.getVacType());
 			if(period > 0) {
 				Utility util = new Utility();
 				String date = util.addDate(dto.getDateFirst(), period);
 				dto.setDateSecond(date);
 				dto.setNotiDate(util.addDate(date, -3));
-				memList.add(dto);
+				dao.insertMemberInfo(dto);
 				return true;
 			} else {
 				System.out.println("[오류] 입력한 백신 이름이 올바르지 않습니다");
@@ -248,12 +217,10 @@ public class MemberService {
 	 * @return 성공시 해당 회원 객체, 실패시 null
 	 */
 	public Member verifyMember(String name, String regiNum) {
-		for(int i = 0; i < memList.size(); i++) {
-			Member dto = memList.get(i);
-			if(dto.getName().equals(name) && dto.getRegiNum().equals(regiNum)) {
-				System.out.println("회원 정보가 확인되었습니다.");
-				return dto;
-			}
+		Member dto = dao.selectOne(name, regiNum);
+		if(dto != null) {
+			System.out.println("회원 정보가 확인되었습니다.");
+			return dto;
 		}
 		System.out.println("[오류] 입력하신 정보로 등록된 회원이 존재하지 않습니다.");
 		return null;
@@ -284,7 +251,7 @@ public class MemberService {
 		System.out.println(dto);
 		
 		if(util.getAnswer("위 회원정보를 삭제하겠습니까?")){
-			memList.remove(dto);
+			dao.deleteOne(dto);
 			System.out.println("정상적으로 삭제되었습니다.");
 		} else {
 			System.out.println("이전 메뉴로 되돌아갑니다.");
@@ -302,8 +269,8 @@ public class MemberService {
 		Utility util = new Utility();
 		
 		if(util.getAnswer("코로나 백신 2차 접종 알림 서비스를 해지하시겠습니까?")) {
-			memList.remove(dto);
-			System.out.println("정상적으로 삭제되었습니다.");
+			if(dao.deleteOne(dto))
+				System.out.println("정상적으로 삭제되었습니다.");
 		} else {
 			System.out.println("이전 메뉴로 되돌아갑니다.");
 		}
@@ -319,8 +286,8 @@ public class MemberService {
 		Utility util = new Utility();
 		
 		if(util.getAnswer("전체 회원 정보를 삭제하시겠습니까?")) {
-			memList.clear();
-			System.out.println("정상적으로 삭제되었습니다.");
+			if(dao.deleteAll())
+				System.out.println("정상적으로 삭제되었습니다.");
 		} else {
 			System.out.println("이전 메뉴로 되돌아갑니다.");
 		}

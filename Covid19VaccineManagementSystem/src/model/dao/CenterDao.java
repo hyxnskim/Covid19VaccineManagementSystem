@@ -22,9 +22,7 @@ public class CenterDao {
 	// FactoryDao 객체 멤버변수 선언 및 할당
 	private FactoryDao factory = FactoryDao.getInstance();
 
-	private CenterDao() {
-		//readFile();
-	}
+	private CenterDao() {}
 	
 	private static CenterDao instance = new CenterDao();
 	
@@ -48,12 +46,11 @@ public class CenterDao {
 				return rs.getInt("COUNT(*)");
 			}
 		} catch (SQLException e) {
-			System.out.println("[오류] selectCount");
+			System.out.println("[오류] Center - selectCount");
 			e.printStackTrace();
 		} finally {
-			factory.close(conn, stmt);
+			factory.close(conn, stmt, rs);
 		}
-		
 		return 0;
 	}
 	
@@ -197,7 +194,7 @@ public class CenterDao {
 				dto.setContact(rs.getString("CONTACT"));
 			}
 		} catch (SQLException e) {
-			System.out.println("[오류] selectOne");
+			System.out.println("[오류] Center - selectOne");
 			e.printStackTrace();
 		} finally {
 			factory.close(conn, stmt, rs);
@@ -231,7 +228,7 @@ public class CenterDao {
 				cenList.add(dto);
 			}
 		} catch (SQLException e) {
-			System.out.println("[오류] selectAll");
+			System.out.println("[오류] Center - selectAll");
 			e.printStackTrace();
 		} finally {
 			factory.close(conn, stmt, rs);
@@ -332,7 +329,7 @@ public class CenterDao {
 				return true;
 			}
 		} catch (SQLException e) {
-			System.out.println("[오류] deletOne");
+			System.out.println("[오류] Center - deleteOne");
 			e.printStackTrace();
 		} finally {
 			factory.close(conn, stmt);
@@ -357,7 +354,7 @@ public class CenterDao {
 				return true;
 			}
 		} catch (SQLException e) {
-			System.out.println("[오류] deleteAll");
+			System.out.println("[오류] Center - deleteAll");
 			e.printStackTrace();
 		} finally {
 			factory.close(conn, stmt);
