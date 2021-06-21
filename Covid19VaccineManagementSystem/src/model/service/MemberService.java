@@ -354,7 +354,8 @@ public class MemberService {
 				case 1:
 					System.out.print("수정할 전화번호 : ");
 					dto.setContact(sc.next());
-					System.out.println("수정되었습니다.");
+					if(dao.updateMember(dto))
+						System.out.println("수정되었습니다.");
 					return;
 				case 2:
 					System.out.println("-------- "); 
@@ -374,11 +375,13 @@ public class MemberService {
 						}
 					}
 					dto.setDistrict(districts.get(num - 1));
-					System.out.println("수정되었습니다.");
+					if(dao.updateMember(dto))
+						System.out.println("수정되었습니다.");
 					return;
 				case 3:
 					dto.setVacType(inputVacType());
-					System.out.println("수정되었습니다.");
+					if(dao.updateMember(dto))
+						System.out.println("수정되었습니다.");
 					return;
 				case 4:
 					System.out.print("1차 접종일 (형식 : 20210608) : ");
@@ -389,7 +392,8 @@ public class MemberService {
 					
 					dto.setDateSecond(date);
 					dto.setNotiDate(util.addDate(date, -3));
-					System.out.println("수정되었습니다.");
+					if(dao.updateMember(dto))
+						System.out.println("수정되었습니다.");
 					return;
 				case 0:
 					System.out.println("이전 메뉴로 돌아갑니다.");
