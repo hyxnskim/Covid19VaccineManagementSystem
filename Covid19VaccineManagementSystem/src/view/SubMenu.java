@@ -70,7 +70,7 @@ public class SubMenu {
 				}
 
 				String tmp;
-				for(int i = 0; i < Integer.parseInt(sdate) - Integer.parseInt(sdate) + 1; i++) {
+				for(int i = 0; i < Integer.parseInt(edate) - Integer.parseInt(sdate) + 1; i++) {
 					tmp = util.addDate(sdate, i);
 					SimpleDateFormat dtFormat = new SimpleDateFormat("yyyyMMdd");
 					Date dt = dtFormat.parse(tmp); 

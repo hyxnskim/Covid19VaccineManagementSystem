@@ -1,5 +1,6 @@
 package util;
 
+import java.text.NumberFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -146,5 +147,17 @@ public class Utility {
 		} catch (ParseException e) {
 			return false;
 		}
+	}
+	
+	/**
+	 * <pre>
+	 * 천단위마다 ,표시한 문자열 반환하는 메서드
+	 * </pre>
+	 * @param num 기존 숫자
+	 * @return 천단위마다 ,표시한 문자열
+	 */
+	public String putComma(long num) {
+		NumberFormat numberFormat = NumberFormat.getInstance();
+		return numberFormat.format(num);
 	}
 }

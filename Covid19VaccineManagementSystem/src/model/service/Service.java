@@ -30,6 +30,7 @@ public class Service {
 	 * @param bDate 기준 일자
 	 */
     public void inocNumToday(String bDate) {
+    	Utility util = new Utility();
     	
     	String surl = "https://api.odcloud.kr/api/15077756/v1/vaccine-stat?page=1&perPage=10";
     	String key = "zkRWa0Rhm9r4fYLj0DzsDezuSW%2FjBzuU3nAUHBSEtZizlGvabVXjN1ozTeDEBQDTZTJBMuXtKI%2FARKHcjw6T0Q%3D%3D";
@@ -48,21 +49,74 @@ public class Service {
         	JSONObject acc = (JSONObject)infoResult.get(0);
         	
         	System.out.println("기준 일자 : " + acc.get("baseDate"));
-        	System.out.println("지역\t\t당일 1차\t당일 2차\t누적 1차\t누적 2차\t(단위 : 명)");
-        	System.out.println("===========================================================");
+        	System.out.println("지역\t\t당일 1차\t당일 2차\t누적 1차\t\t누적 2차\t\t1차 접종률\t\t2차 접종률");
+        	System.out.println("=====================================================================================");
         	for(int i = 0; i<infoResult.size(); i++) {
         		JSONObject res = (JSONObject)infoResult.get(i);
-        		if(res.get("sido").equals("세종특별자치시")) {
+        		String sido = (String)res.get("sido");
+        		if(sido.equals("세종특별자치시")) {
         			System.out.print("세종특별자치시\t");
         		} else {
         			System.out.print(res.get("sido") + "\t\t");
         		}
-        		System.out.printf("%d\t%d\t%d\t%d\t\n", 
-        				res.get("firstCnt"), res.get("secondCnt"), 
-        				res.get("totalFirstCnt"), res.get("totalSecondCnt"));
+        		
+        		long firstCnt = (long)res.get("firstCnt");
+        		long secondCnt = (long)res.get("secondCnt");
+        		long totFirstCnt = (long)res.get("totalFirstCnt");
+        		long totSecondCnt = (long)res.get("totalSecondCnt");
+        		int pop = returnPop(sido);
+        		
+        		System.out.printf("%s\t%s\t", util.putComma(firstCnt), util.putComma(secondCnt)); 
+        		
+        		String tmp = util.putComma(totFirstCnt);
+        		System.out.printf("%s", tmp);
+        		if(tmp.length() < 9) System.out.print("\t\t");
+        		else System.out.print("\t");
+        		
+        		tmp = util.putComma(totSecondCnt);
+        		System.out.printf("%s", tmp);
+        		if(tmp.length() < 9) System.out.print("\t\t");
+        		else System.out.print("\t");
+        		
+        		System.out.printf("%.2f%%\t\t%.2f%%\n", (double)totFirstCnt / pop * 100, (double)totSecondCnt / pop * 100); 
         	}
     	}catch(Exception e) {
     		e.printStackTrace();
+    	}
+    }
+    
+    /**
+     * <pre>
+     * 시도별 인구를 반환하는 메서드
+     * </pre>
+     * @param sido 시도
+     * @return 시도별 인구
+     */
+    public int returnPop(String sido) {
+    	if(sido.equals("전국")) {
+    		return 52980961;
+    	} else if(sido.equals("서울특별시")) {
+    		return 9911088;
+    	} else if(sido.equals("부산광역시")) {
+    		return 3438710;
+    	} else if(sido.equals("대구광역시")) {
+    		return 2446144;
+    	} else if(sido.equals("인천광역시")) {
+    		return 3010476;
+    	} else if(sido.equals("광주광역시")) {
+    		return 1471385;
+    	} else if(sido.equals("대전광역시")) {
+    		return 1480777;
+    	} else if(sido.equals("울산광역시")) {
+    		return 1153901;
+    	} else if(sido.equals("세종특별자치시")) {
+    		return 360907;
+    	} else if(sido.equals("경기도")) {
+    		return 13807158;
+    	} else if(sido.equals("강원도")) {
+    		return 1560172;
+    	} else {
+    		return 0;
     	}
     }
     
