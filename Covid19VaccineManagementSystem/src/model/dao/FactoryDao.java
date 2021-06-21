@@ -24,7 +24,7 @@ public class FactoryDao {
 	// jdbc resource property
 	private String driver = "oracle.jdbc.driver.OracleDriver";
 	private String url = "jdbc:oracle:thin:@localhost:1521:XE";
-	private String user = "scott";
+	private String user = "vaccine";
 	private String password = "tiger";
 	
 	private FactoryDao(){
@@ -43,7 +43,9 @@ public class FactoryDao {
 	}
 	
 	/**
+	 * <pre>
 	 * DB 연결 Connection 반환 메서드
+	 * </pre>
 	 * @return Connection
 	 */
 	public Connection getConnection() {
@@ -57,7 +59,9 @@ public class FactoryDao {
 	}
 	
 	/**
+	 * <pre>
 	 * 자원 해제 : SELECT 수행에 대한 자원
+	 * </pre>
 	 * @param conn
 	 * @param stmt
 	 * @param rs
@@ -82,7 +86,9 @@ public class FactoryDao {
 	}
 	
 	/**
+	 * <pre>
 	 * 자원해제 : CUD 수행에 대한 자원
+	 * </pre>
 	 * @param conn
 	 * @param stmt
 	 */

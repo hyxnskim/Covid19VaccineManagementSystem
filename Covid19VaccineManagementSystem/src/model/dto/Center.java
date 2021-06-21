@@ -156,17 +156,18 @@ public class Center {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((centerName == null) ? 0 : centerName.hashCode());
-		result = prime * result + ((postCode == null) ? 0 : postCode.hashCode());
+		result = prime * result + ((facName == null) ? 0 : facName.hashCode());
 		return result;
 	}
 
 	/**
 	 * <pre>
 	 * equal 메서드 재정의
-	 * -- 센터명과 우편번호가 동시에 일치하면 동일한 객체로 처리
+	 * -- 센터명과 시설명이 동시에 일치하면 동일한 객체로 처리
 	 * @param obj 검사 대상 객체
 	 * </pre>
 	 */
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -181,10 +182,10 @@ public class Center {
 				return false;
 		} else if (!centerName.equals(other.centerName))
 			return false;
-		if (postCode == null) {
-			if (other.postCode != null)
+		if (facName == null) {
+			if (other.facName != null)
 				return false;
-		} else if (!postCode.equals(other.postCode))
+		} else if (!facName.equals(other.facName))
 			return false;
 		return true;
 	}
