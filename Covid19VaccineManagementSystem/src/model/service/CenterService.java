@@ -17,7 +17,7 @@ import util.Utility;
  * 센터 관리 위한 메서드 구현
  * </pre>
  * @author Hyunsoo Kim
- * @version ver.1.0
+ * @version ver.2.0
  * @Since jdk1.8
  */
 public class CenterService {

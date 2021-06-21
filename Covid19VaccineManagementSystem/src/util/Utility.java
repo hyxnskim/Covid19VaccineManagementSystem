@@ -11,7 +11,7 @@ import java.util.Scanner;
  * 공통 메서드 
  * </pre>
  * @author Hyunsoo Kim
- * @version ver.1.0
+ * @version ver.2.0
  * @since jdk1.8
  */
 

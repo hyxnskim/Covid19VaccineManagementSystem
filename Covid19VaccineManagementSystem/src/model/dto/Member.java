@@ -12,7 +12,7 @@ import java.util.Date;
  * 등록 사용자 도메인 클래스
  * </pre>
  * @author Hyunsoo Kim
- * @version ver.1.0
+ * @version ver.2.0
  * @since jdk1.8
  */
 public class Member {

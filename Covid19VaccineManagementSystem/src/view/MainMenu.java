@@ -10,7 +10,7 @@ import util.UI;
  * 메인 화면 구성
  * </pre>
  * @author Hyunsoo Kim
- * @version ver.1.0
+ * @version ver.2.0
  * @since jdk1.8
  */
 public class MainMenu {

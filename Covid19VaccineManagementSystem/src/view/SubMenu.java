@@ -18,7 +18,7 @@ import util.Utility;
  * 메인 메뉴로부터 호출됨, 각 클래스에서 메서드를 호출
  * </pre>
  * @author Hyunsoo Kim
- * @version ver.1.0
+ * @version ver.2.0
  * @since jdk1.8
  */
 public class SubMenu {
