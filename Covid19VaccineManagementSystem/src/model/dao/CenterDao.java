@@ -219,7 +219,7 @@ public class CenterDao {
 
 			rs = stmt.executeQuery();
 			
-			if(rs.next()) {
+			while(rs.next()) {
 				String centerName = rs.getString("CNAME");
 				String facName = rs.getString("FNAME");
 				String postCode = rs.getString("POSTCODE");
@@ -255,7 +255,7 @@ public class CenterDao {
 			
 			rs = stmt.executeQuery();
 			
-			if(rs.next()) {
+			while(rs.next()) {
 				String centerName = rs.getString("CNAME");
 				String facName = rs.getString("FNAME");
 				String postCode = rs.getString("POSTCODE");
@@ -279,11 +279,11 @@ public class CenterDao {
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
 		ArrayList<Center> cenList = new ArrayList<Center>();
-		
+
 		try {
 			conn = factory.getConnection();
 			
-			String sql = "SELECT * FROM CENTER WHERE CNAME LIKE ? OR FNAME LIKE ? OR ADDRESS LIKE ?;";
+			String sql = "SELECT * FROM CENTER WHERE CNAME LIKE ? OR FNAME LIKE ? OR ADDRESS LIKE ?";
 			stmt = conn.prepareStatement(sql);
 
 			stmt.setString(1, "%" + keyword + "%");
@@ -292,7 +292,7 @@ public class CenterDao {
 			
 			rs = stmt.executeQuery();
 			
-			if(rs.next()) {
+			while(rs.next()) {
 				String centerName = rs.getString("CNAME");
 				String facName = rs.getString("FNAME");
 				String postCode = rs.getString("POSTCODE");
