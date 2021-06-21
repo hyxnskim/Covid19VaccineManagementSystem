@@ -36,7 +36,6 @@ public class SubMenu {
 	 * @throws ParseException
 	 */
 	public void printCurrentVac() throws ParseException {
-		Utility util = new Utility();
 		int num;
 
 		while(true) {
@@ -70,7 +69,6 @@ public class SubMenu {
 					if(util.isDateInRange(edate)) break;
 				}
 
-				
 				String tmp;
 				for(int i = 0; i < Integer.parseInt(sdate) - Integer.parseInt(sdate) + 1; i++) {
 					tmp = util.addDate(sdate, i);
@@ -151,7 +149,6 @@ public class SubMenu {
 				ui.printSubSubMenu("지역별 센터 조회");
 				cs.printCenterByDistrict();
 				break;
-				
 			case 3:
 				ui.printSubMenu("키워드 조회");
 				cs.printCenterByKeywords();
@@ -249,7 +246,6 @@ public class SubMenu {
 		int num;
 		
 		while(true) {
-			
 			ui.printSubMenu("내 정보 관리");
 			
 			System.out.println("1. 내 정보 조회");

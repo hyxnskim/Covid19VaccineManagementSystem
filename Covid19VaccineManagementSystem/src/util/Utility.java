@@ -79,7 +79,9 @@ public class Utility {
 			
 			if(tmp.length() == 8) {
 				for(int i = 0; i < tmp.length(); i++) {
-					if(tmp.charAt(i) >= '0' && tmp.charAt(i) <= '9') continue;
+					if(tmp.charAt(i) >= '0' && tmp.charAt(i) <= '9') {
+						continue;
+					}
 					else{
 						flag = 1;
 						break;
@@ -89,9 +91,13 @@ public class Utility {
 				flag = 1;
 			}
 			if(flag == 0) {
-				if(isValidDate(tmp)) return tmp;
+				if(isValidDate(tmp)) {
+					return tmp;
+				}
 			}
-			else System.out.println("[오류] 입력 형식을 확인해주세요");
+			else{
+				System.out.println("[오류] 입력 형식을 확인해주세요");
+			}
 		}
 	}
 	
@@ -131,12 +137,12 @@ public class Utility {
 			if(dt.before(dt1)) {
 				System.out.println("2021년 3월 11일 이후 날짜만 입력 가능합니다.");
 				return false;
-			}
-			else if(dt.after(dt2)) {
+			} else if(dt.after(dt2)) {
 				System.out.println("오늘 이전 날짜만 입력 가능합니다.");
 				return false;
+			} else {
+				return true;
 			}
-			else return true;
 		} catch (ParseException e) {
 			return false;
 		}

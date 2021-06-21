@@ -177,7 +177,6 @@ public class MemberService {
 	 * @throws ParseException
 	 */
 	public boolean addMember(String name, String vacType, String dateFirst) throws ParseException {
-		//Scanner sc = new Scanner(System.in);
 		ArrayList<String> districts = new CenterService().getDistricts();
 		int num = 0;
 		Member dto = new Member();
@@ -233,14 +232,16 @@ public class MemberService {
 			if(tmp.length() == 14) {
 				for(int i = 0; i < tmp.length(); i++) {
 					if(i == 6) {
-						if(tmp.charAt(i) == '-') continue;
-						else {
+						if(tmp.charAt(i) == '-') {
+							continue;
+						} else {
 							flag = 1;
 							break;
 						}
 					} 
-					if(tmp.charAt(i) >= '0' && tmp.charAt(i) <= '9') continue;
-					else{
+					if(tmp.charAt(i) >= '0' && tmp.charAt(i) <= '9') {
+						continue;
+					} else {
 						flag = 1;
 						break;
 					}
@@ -252,7 +253,7 @@ public class MemberService {
 				if(dao.selectRegiNum(tmp)) {
 					System.out.println("[오류] 이미 등록된 주민등록번호입니다.");
 					if(!util.getAnswer("계속 등록하시겠습니까?")) return null;
-				}
+				} 
 				else break;
 			}
 			else{
@@ -278,8 +279,9 @@ public class MemberService {
 			
 			if(tmp.length() == 11) {
 				for(int i = 0; i < tmp.length(); i++) {
-					if(tmp.charAt(i) >= '0' && tmp.charAt(i) <= '9') continue;
-					else{
+					if(tmp.charAt(i) >= '0' && tmp.charAt(i) <= '9') {
+						continue;
+					} else{
 						flag = 1;
 						break;
 					}
@@ -287,8 +289,11 @@ public class MemberService {
 			} else {
 				flag = 1;
 			}
-			if(flag == 0) break;
-			else System.out.println("[오류] 입력 형식을 확인해주세요");
+			if(flag == 0) {
+				break;
+			} else {
+				System.out.println("[오류] 입력 형식을 확인해주세요");
+			}
 		}
 		return tmp;
 	}
@@ -319,7 +324,6 @@ public class MemberService {
 	 */
 	public void delMember() {
 		Utility util = new Utility();
-		//Scanner sc = new Scanner(System.in);
 		String name, regiNum;
 		
 		System.out.print("이름 : "); name = sc.next();
@@ -386,7 +390,6 @@ public class MemberService {
 	 * @throws ParseException
 	 */
 	public void reviseMember() throws ParseException {
-		//Scanner sc = new Scanner(System.in);
 		String name, regiNum;
 		
 		System.out.print("이름 : "); name = sc.next();
@@ -413,7 +416,6 @@ public class MemberService {
 	 */
 	public void reviseMember(Member dto) throws ParseException {
 		Utility util = new Utility();
-		//Scanner sc = new Scanner(System.in);
 		ArrayList<String> districts = new CenterService().getDistricts();
 		int num;
 		
@@ -496,8 +498,6 @@ public class MemberService {
 	 * @throws ParseException
 	 */
 	public void notification(Member dto) throws ParseException {
-		//Scanner sc = new Scanner(System.in);
-		
 		String today = new SimpleDateFormat("yyyyMMdd").format(new Date());
 		String second = dto.getDateSecond();
 		

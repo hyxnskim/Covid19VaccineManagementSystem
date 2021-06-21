@@ -19,7 +19,6 @@ import model.dto.Center;
 
 public class CenterDao {
 	
-	// FactoryDao 객체 멤버변수 선언 및 할당
 	private FactoryDao factory = FactoryDao.getInstance();
 
 	private CenterDao() {}
@@ -40,6 +39,7 @@ public class CenterDao {
 		Connection conn = null;
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
+		
 		try {
 			conn = factory.getConnection();
 			
@@ -47,7 +47,6 @@ public class CenterDao {
 			stmt = conn.prepareStatement(sql);
 
 			rs = stmt.executeQuery();
-			
 			if(rs.next()) {
 				return rs.getInt("COUNT(*)");
 			}
@@ -70,6 +69,7 @@ public class CenterDao {
 	public boolean insertCenterInfo(Center dto) {
 		Connection conn = null;
 		PreparedStatement stmt = null;
+		
 		try {
 			conn = factory.getConnection();
 			
@@ -84,8 +84,6 @@ public class CenterDao {
 			stmt.setString(6, dto.getContact());
 
 			int rows = stmt.executeUpdate();
-			
-			// 5.
 			if(rows > 0) {
 				return true;
 			}
@@ -109,6 +107,7 @@ public class CenterDao {
 		Connection conn = null;
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
+		
 		try {
 			conn = factory.getConnection();
 			
@@ -116,7 +115,6 @@ public class CenterDao {
 			stmt = conn.prepareStatement(sql);
 
 			rs = stmt.executeQuery();
-			
 			while(rs.next()) {
 				districts.add(rs.getString("D"));
 			}
@@ -128,7 +126,6 @@ public class CenterDao {
 		} finally {
 			factory.close(conn, stmt, rs);
 		}
-		
 		return null;
 	}
 	
@@ -143,6 +140,7 @@ public class CenterDao {
 		Connection conn = null;
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
+		
 		try {
 			conn = factory.getConnection();
 			
@@ -153,7 +151,6 @@ public class CenterDao {
 			stmt.setString(2, dto.getFacName());
 
 			rs = stmt.executeQuery();
-			
 			if(rs.next()) {
 				return true;
 			}
@@ -178,6 +175,7 @@ public class CenterDao {
 		Connection conn = null;
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
+		
 		try {
 			conn = factory.getConnection();
 			
@@ -188,7 +186,6 @@ public class CenterDao {
 			stmt.setString(2, facName);
 
 			rs = stmt.executeQuery();
-			
 			if(rs.next()) {
 				return true;
 			}
@@ -225,7 +222,6 @@ public class CenterDao {
 			stmt.setString(2, facName);
 
 			rs = stmt.executeQuery();
-			
 			if(rs.next()) {
 				dto.setCenterName(centerName);
 				dto.setFacName(facName);
@@ -234,13 +230,14 @@ public class CenterDao {
 				dto.setAddress(rs.getString("ADDRESS"));
 				dto.setContact(rs.getString("CONTACT"));
 			}
+			return dto;
 		} catch (SQLException e) {
 			System.out.println("[오류] Center - selectOne");
 			e.printStackTrace();
 		} finally {
 			factory.close(conn, stmt, rs);
 		}
-		return dto;
+		return null;
 	}
 	
 	/**
@@ -262,7 +259,6 @@ public class CenterDao {
 			stmt = conn.prepareStatement(sql);
 
 			rs = stmt.executeQuery();
-			
 			while(rs.next()) {
 				String centerName = rs.getString("CNAME");
 				String facName = rs.getString("FNAME");
@@ -274,13 +270,14 @@ public class CenterDao {
 				Center dto = new Center(centerName, facName, postCode, district, address, contact);
 				cenList.add(dto);
 			}
+			return cenList;
 		} catch (SQLException e) {
 			System.out.println("[오류] Center - selectAll");
 			e.printStackTrace();
 		} finally {
 			factory.close(conn, stmt, rs);
 		}
-		return cenList;
+		return null;
 	}
 	
 	/**
@@ -305,7 +302,6 @@ public class CenterDao {
 			stmt.setString(1, district);
 			
 			rs = stmt.executeQuery();
-			
 			while(rs.next()) {
 				String centerName = rs.getString("CNAME");
 				String facName = rs.getString("FNAME");
@@ -349,7 +345,6 @@ public class CenterDao {
 			stmt.setString(3, "%" + keyword + "%");
 			
 			rs = stmt.executeQuery();
-			
 			while(rs.next()) {
 				String centerName = rs.getString("CNAME");
 				String facName = rs.getString("FNAME");
@@ -392,8 +387,6 @@ public class CenterDao {
 			stmt.setString(2, facName);
 
 			int rows = stmt.executeUpdate();
-			
-			// 5.
 			if(rows > 0) {
 				return true;
 			}
@@ -423,8 +416,6 @@ public class CenterDao {
 			stmt = conn.prepareStatement(sql);
 
 			int rows = stmt.executeUpdate();
-			
-			// 5.
 			if(rows > 0) {
 				return true;
 			}

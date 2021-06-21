@@ -33,11 +33,9 @@ public class Service {
     	
     	String surl = "https://api.odcloud.kr/api/15077756/v1/vaccine-stat?page=1&perPage=10";
     	String key = "zkRWa0Rhm9r4fYLj0DzsDezuSW%2FjBzuU3nAUHBSEtZizlGvabVXjN1ozTeDEBQDTZTJBMuXtKI%2FARKHcjw6T0Q%3D%3D";
-    	//String bDate = "2021-05-12";
     	String result = "";
     	
     	try {
-
     		URL url = new URL(surl + "&cond%5BbaseDate%3A%3AEQ%5D=" + bDate + "%2000:00:00&serviceKey=" + key);
     		
     		BufferedReader bf;
@@ -63,7 +61,6 @@ public class Service {
         				res.get("firstCnt"), res.get("secondCnt"), 
         				res.get("totalFirstCnt"), res.get("totalSecondCnt"));
         	}
-
     	}catch(Exception e) {
     		e.printStackTrace();
     	}

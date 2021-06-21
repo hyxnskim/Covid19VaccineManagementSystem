@@ -55,8 +55,6 @@ public class MemberDao {
 			stmt.setString(8, dto.getNotiDate());
 
 			int rows = stmt.executeUpdate();
-			
-			// 5.
 			if(rows > 0) {
 				return true;
 			}
@@ -86,7 +84,6 @@ public class MemberDao {
 			stmt = conn.prepareStatement(sql);
 
 			rs = stmt.executeQuery();
-			
 			if(rs.next()) {
 				return rs.getInt("COUNT(*)");
 			}
@@ -119,7 +116,6 @@ public class MemberDao {
 			stmt.setString(1, regiNum);
 
 			rs = stmt.executeQuery();
-			
 			if(rs.next()) {
 				int cnt = rs.getInt("COUNT(*)");
 				if(cnt>0) return true;
@@ -153,7 +149,6 @@ public class MemberDao {
 			stmt = conn.prepareStatement(sql);
 
 			rs = stmt.executeQuery();
-			
 			while(rs.next()) {
 				String regiNum = rs.getString("REGINUM");
 				String name = rs.getString("MNAME");
@@ -200,7 +195,6 @@ public class MemberDao {
 			stmt.setString(2, regiNum);
 
 			rs = stmt.executeQuery();
-			
 			if(rs.next()) {
 				dto.setRegiNum(rs.getString("REGINUM"));
 				dto.setName(rs.getString("MNAME"));
@@ -231,14 +225,11 @@ public class MemberDao {
 		Connection conn = null;
 		PreparedStatement stmt = null;
 		try {
-			// 2.
 			conn = factory.getConnection();
 			
-			// 3. 주의사항 : SQL구문 뒤에 ;(세미콜론)이 와서는 안됨
 			String sql = "UPDATE MEMBER SET CONTACT = ?, DISTRICT = ?, VACTYPE = ?, DATE_FIRST = ?, DATE_SECOND = ?, NOTIDATE = ? WHERE MNAME = ? AND REGINUM = ?";
 			stmt = conn.prepareStatement(sql);
 			
-			// 순서 조심
 			stmt.setString(1, dto.getContact());
 			stmt.setString(2, dto.getDistrict());
 			stmt.setString(3, dto.getVacType());
@@ -248,10 +239,7 @@ public class MemberDao {
 			stmt.setString(7, dto.getName());
 			stmt.setString(8, dto.getRegiNum());
 			
-			// 4. 로그인을 위한 SQL 구문 : 실행시에 이미 전용통로로 개설되었으므로 sql 구문을 지정해서는 안됨
 			int rows = stmt.executeUpdate();
-			
-			// 5.
 			if(rows > 0) {
 				return true;
 			}
@@ -285,8 +273,6 @@ public class MemberDao {
 			stmt.setString(2, dto.getRegiNum());
 
 			int rows = stmt.executeUpdate();
-			
-			// 5.
 			if(rows > 0) {
 				return true;
 			}
@@ -316,8 +302,6 @@ public class MemberDao {
 			stmt = conn.prepareStatement(sql);
 
 			int rows = stmt.executeUpdate();
-			
-			// 5.
 			if(rows > 0) {
 				return true;
 			}
