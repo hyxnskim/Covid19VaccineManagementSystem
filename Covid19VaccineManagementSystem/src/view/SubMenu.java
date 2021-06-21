@@ -40,7 +40,7 @@ public class SubMenu {
 
 		while(true) {
 			ui.printSubMenu("백신 접종 현황 조회");
-		
+	
 			System.out.println("1. 오늘 현황 조회");
 			System.out.println("2. 날짜별 검색");
 			System.out.println("0. 돌아가기");
@@ -51,9 +51,20 @@ public class SubMenu {
 			switch(num) {
 			case 1:
 				ui.printSubSubMenu("오늘 현환 조회");
-				service.inocNumToday(new SimpleDateFormat("yyyy-MM-dd").format(new Date()));
-				break;
 				
+				SimpleDateFormat df = new SimpleDateFormat("HH");
+				String currentHour = df.format(new Date());
+				if(Integer.parseInt(currentHour) < 10) {
+					System.out.println("오늘의 백신 접종 현황이 업데이트되지 않았습니다.\n어제 백신 접종 현황을 조회합니다.");
+					
+					SimpleDateFormat df2 = new SimpleDateFormat("yyyyMMdd");
+					String tmp = util.addDate(df2.format(new Date()), -1);
+					Date dt = df2.parse(tmp); 
+					service.inocNumToday(new SimpleDateFormat("yyyy-MM-dd").format(dt));
+				} else {
+					service.inocNumToday(new SimpleDateFormat("yyyy-MM-dd").format(new Date()));
+				}
+				break;
 			case 2:
 				String sdate, edate;
 				ui.printSubSubMenu("날짜별 검색");

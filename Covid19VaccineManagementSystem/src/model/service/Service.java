@@ -49,8 +49,8 @@ public class Service {
         	JSONObject acc = (JSONObject)infoResult.get(0);
         	
         	System.out.println("기준 일자 : " + acc.get("baseDate"));
-        	System.out.println("지역\t\t당일 1차\t당일 2차\t누적 1차\t\t누적 2차\t\t1차 접종률\t\t2차 접종률");
-        	System.out.println("=====================================================================================");
+        	System.out.println("지역\t\t당일 1차\t\t당일 2차\t\t누적 1차\t\t누적 2차\t\t1차 접종률\t\t2차 접종률");
+        	System.out.println("==========================================================================================================");
         	for(int i = 0; i<infoResult.size(); i++) {
         		JSONObject res = (JSONObject)infoResult.get(i);
         		String sido = (String)res.get("sido");
@@ -66,7 +66,7 @@ public class Service {
         		long totSecondCnt = (long)res.get("totalSecondCnt");
         		int pop = returnPop(sido);
         		
-        		System.out.printf("%s\t%s\t", util.putComma(firstCnt), util.putComma(secondCnt)); 
+        		System.out.printf("%s\t\t%s\t\t", util.putComma(firstCnt), util.putComma(secondCnt)); 
         		
         		String tmp = util.putComma(totFirstCnt);
         		System.out.printf("%s", tmp);
