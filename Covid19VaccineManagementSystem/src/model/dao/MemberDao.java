@@ -203,6 +203,8 @@ public class MemberDao {
 				dto.setDateFirst(rs.getString("DATE_FIRST"));
 				dto.setDateSecond(rs.getString("DATE_SECOND"));
 				dto.setNotiDate(rs.getString("NOTIDATE"));
+				
+				return dto;
 			}
 		} catch (SQLException e) {
 			System.out.println("[오류] Member - selectOne");
@@ -210,7 +212,7 @@ public class MemberDao {
 		} finally {
 			factory.close(conn, stmt, rs);
 		}
-		return dto;
+		return null;
 	}
 	
 	/**

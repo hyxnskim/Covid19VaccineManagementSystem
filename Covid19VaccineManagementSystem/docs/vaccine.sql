@@ -47,4 +47,7 @@ ROLLBACK;
 
 SELECT * FROM CENTER WHERE CNAME LIKE '%강남%' OR FNAME LIKE '%강남%' OR ADDRESS LIKE '%강남%';
 
-SHOW PARAMETER PROCESSES;
+select * from resource_limit where resource_name = 'processes';
+alter system set processes=300 scopte=spfile;
+
+SELECT * FROM MEMBER WHERE MNAME = '김현수' AND REGINUM = '970620-1234567';

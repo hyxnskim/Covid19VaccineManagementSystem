@@ -410,7 +410,8 @@ public class MemberService {
 	public void reviseMember(Member dto) throws ParseException {
 		Utility util = new Utility();
 		ArrayList<String> districts = new CenterService().getDistricts();
-		int num;
+		int num, period;
+		String date;
 		
 		System.out.println(dto);
 		
@@ -458,14 +459,19 @@ public class MemberService {
 					return;
 				case 3:
 					dto.setVacType(inputVacType());
+					period = findPeriod(dto.getVacType());
+					date = util.addDate(dto.getDateFirst(), period);
+					
+					dto.setDateSecond(date);
+					dto.setNotiDate(util.addDate(date, -3));
+					
 					if(dao.updateMember(dto))
 						System.out.println("수정되었습니다.");
 					return;
 				case 4:
 					dto.setDateFirst(util.inputDate("1차 접종일 (형식 : 20210608)"));
-					
-					int period = findPeriod(dto.getVacType());
-					String date = util.addDate(dto.getDateFirst(), period);
+					period = findPeriod(dto.getVacType());
+					date = util.addDate(dto.getDateFirst(), period);
 					
 					dto.setDateSecond(date);
 					dto.setNotiDate(util.addDate(date, -3));
@@ -501,7 +507,7 @@ public class MemberService {
 		String tmp = new SimpleDateFormat("yyyy년 MM월 dd일").format(dt);
 		
 		if(sd - td > 3) {
-			System.out.println("알림 기간이 아닙니다.\n");
+			System.out.println("알림 기간이 아닙니다.");
 			System.out.println(dto.getName() + "님의 2차 접종 예정일은 " + tmp + " 입니다.");
 			
 		} else if(sd - td <= 3 && sd - td >= 0) {

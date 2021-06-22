@@ -97,7 +97,8 @@ public class CenterService {
 	public void readFile() {
 		BufferedReader br = null;
 		String line;
-		String path = "./docs/centerInfo.csv";
+		String path = "C:\\Users\\hskim\\git\\Covid19VaccineManagementSystem\\Covid19VaccineManagementSystem\\docs\\centerInfo.csv";
+		//String path = "./docs/centerInfo.csv";
 		try {
 			br = new BufferedReader(new InputStreamReader(new FileInputStream(path), "UTF-8"));
 			while((line = br.readLine()) != null) {
@@ -327,7 +328,7 @@ public class CenterService {
 		int idx = 1;
 		
 		for(int i = 0; i < cenList.size(); i++) {
-			System.out.print("[" + idx++ + "] " + cenList.get(i));
+			System.out.print("[" + idx++ + "] " + cenList.get(i) + "\n");
 		}
 	}
 	

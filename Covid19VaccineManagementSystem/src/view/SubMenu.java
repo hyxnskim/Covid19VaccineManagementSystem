@@ -46,7 +46,6 @@ public class SubMenu {
 			System.out.println("2. 날짜별 검색");
 			System.out.println("0. 돌아가기");
 			
-			System.out.print("사용하실 메뉴 번호를 입력하세요 : ");
 			num = util.inputNum("사용하실 메뉴 번호를 입력하세요");
 			
 			switch(num) {
@@ -231,7 +230,7 @@ public class SubMenu {
 		ui.printSubSubMenu("회원 정보 확인");
 		
 		System.out.print("이름 : "); name = sc.next();
-		regiNum = ms.inputRegiNum();
+		System.out.print("주민등록번호 : "); regiNum = sc.next();
 		
 		return ms.verifyMember(name, regiNum);
 	}
@@ -347,7 +346,7 @@ public class SubMenu {
 		int num;
 		
 		while(true) {
-			ui.printSubMenu("회원 관리");
+			ui.printSubSubMenu("회원 관리");
 			
 			System.out.println("1. 등록 회원 전체 조회");
 			System.out.println("2. 신규 회원 등록");
