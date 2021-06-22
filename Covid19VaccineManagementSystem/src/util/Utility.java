@@ -19,6 +19,30 @@ import java.util.Scanner;
 public class Utility {
 	
 	/**
+	 * <pre>
+	 * 숫자 입력받는 메서드
+	 * </pre>
+	 * @param message 출력할 메세지
+	 * @return 입력받은 숫자
+	 */
+	public int inputNum(String message) {
+		Scanner sc = new Scanner(System.in);
+		String tmp;
+		int num;
+		
+		while(true) {
+			System.out.print(message + " : ");
+			tmp = sc.next();
+			try {
+				num = Integer.parseInt(tmp);
+				return num;
+			} catch(NumberFormatException e) {
+				System.out.println("숫자를 입력하세요");
+			}
+		}
+	}
+	
+	/**
      * <pre>
      * 질문에 대한 형식에 맞는 답을 받는 메서드
      * </pre>

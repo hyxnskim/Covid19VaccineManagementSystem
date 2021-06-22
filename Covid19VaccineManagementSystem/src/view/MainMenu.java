@@ -3,7 +3,7 @@ package view;
 import java.text.ParseException;
 import java.util.Scanner;
 
-import util.UI;
+import util.Utility;
 
 /**
  * <pre>
@@ -27,7 +27,7 @@ public class MainMenu {
 	 * @throws ParseException
 	 */
 	public void showMain() throws ParseException {
-		UI ui = new UI();
+		Utility util = new Utility();
 		SubMenu sm = new SubMenu();
 		Scanner sc = new Scanner(System.in);
 		int num;
@@ -47,8 +47,8 @@ public class MainMenu {
 			System.out.println("0. 프로그램 종료");
 			System.out.println();
 		
-			System.out.print("사용하실 메뉴 번호를 입력하세요 : ");
-			num = sc.nextInt();
+			num = util.inputNum("사용하실 메뉴 번호를 입력하세요");
+
 			switch(num) {
 			case 1:
 				sm.printCurrentVac();

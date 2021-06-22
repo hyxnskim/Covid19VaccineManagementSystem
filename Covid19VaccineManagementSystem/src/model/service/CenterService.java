@@ -1,16 +1,12 @@
 
 package model.service;
 
-import java.io.BufferedReader;
-import java.io.FileInputStream;
-import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.InputMismatchException;
 import java.util.Scanner;
-import java.util.stream.Collectors;
 
 import model.dao.CenterDao;
 import model.dto.Center;
-import util.UI;
 import util.Utility;
 
 /**
@@ -113,23 +109,40 @@ public class CenterService {
 	 */
 	public boolean addCenter() {
 		Scanner sc = new Scanner(System.in);
-		String centerName, facName, postCode, district, address, contact;
-		int num;
+		String centerName, facName, postCode, district = null, address, contact;
+		int num = 0;
 		
-		System.out.print("센터명 : "); centerName = sc.next();
-		System.out.print("\n시설명 : "); facName = sc.next();
-		System.out.print("\n우편번호 : "); postCode = sc.next();
+		System.out.print("센터명 : "); centerName = sc.nextLine();
+		System.out.print("시설명 : "); facName = sc.nextLine();
+		System.out.print("우편번호 : "); postCode = sc.next();
 		
 		System.out.print("[ ");
 		for(int i = 0; i < districts.size(); i++) {
 			System.out.print((i+1) + ". " + districts.get(i) + "\t");
+			if(districts.get(i).equals("강원도")) System.out.print("\t");
+			if(i%3==2) System.out.println();
 		}
 		System.out.println("]");
-		System.out.print("지역 번호를 입력하세요 : "); num = sc.nextInt();
-		district = districts.get(num - 1);
+		while(true) {
+			System.out.print("지역 번호를 입력하세요 : "); 
+			try {
+				num = sc.nextInt();
+				break;
+			} catch (InputMismatchException e) {
+				System.out.println("숫자를 입력하세요");
+			}
 		
-		System.out.print("\n주소 : "); address = sc.next();
-		System.out.print("\n연락처 : "); contact = sc.next();
+			if(num > 0 && num <= districts.size()) {
+				district = districts.get(num - 1);
+				break;
+			} else {
+				System.out.println("[오류] 1 ~ " + districts.size() + " 사이의 숫자를 입력하세요");
+			}
+		}
+		sc.nextLine();
+		
+		System.out.print("주소 : "); address = sc.nextLine();
+		System.out.print("연락처 : "); contact = sc.next();
 		
 		Center dto = new Center(centerName, facName, postCode, district, address, contact);
 		
@@ -148,7 +161,7 @@ public class CenterService {
 		String centerName, facName, yn;
 		
 		System.out.print("센터명 : "); centerName = sc.next();
-		System.out.print("\n시설명 : "); facName = sc.next();
+		System.out.print("시설명 : "); facName = sc.next();
 		
 		if(exist(centerName, facName)) {
 			System.out.println(dao.selectOne(centerName, facName));
@@ -190,8 +203,8 @@ public class CenterService {
 		Scanner sc = new Scanner(System.in);
 		String centerName, facName, yn;
 		
-		System.out.print("센터명 : "); centerName = sc.next();
-		System.out.print("\n시설명 : "); facName = sc.next();
+		System.out.print("센터명 : "); centerName = sc.nextLine();
+		System.out.print("시설명 : "); facName = sc.nextLine();
 		
 		if(!exist(centerName, facName)) {
 			System.out.println("[오류] 등록되지 않은 센터입니다. 입력 정보를 확인해주세요.");
@@ -204,9 +217,9 @@ public class CenterService {
 		if(util.getAnswer("위 센터의 정보를 수정하시겠습니까?")) {
 			dao.deleteOne(centerName, facName);
 			if(addCenter()) {
-				System.out.println("\n정상적으로 수정되었습니다.");
+				System.out.println("정상적으로 수정되었습니다.");
 			} else {
-				System.out.println("\n[오류] 이미 등록된 센터입니다.");
+				System.out.println("[오류] 이미 등록된 센터입니다.");
 			}
 		} else {
 			System.out.println("관리자 메뉴로 되돌아갑니다.");

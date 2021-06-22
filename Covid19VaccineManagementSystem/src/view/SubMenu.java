@@ -47,11 +47,11 @@ public class SubMenu {
 			System.out.println("0. 돌아가기");
 			
 			System.out.print("사용하실 메뉴 번호를 입력하세요 : ");
-			num = sc.nextInt();
+			num = util.inputNum("사용하실 메뉴 번호를 입력하세요");
 			
 			switch(num) {
 			case 1:
-				ui.printSubSubMenu("오늘 현환 조회");
+				ui.printSubSubMenu("오늘 현황 조회");
 
 				String date = util.todayBeforeTen(df.format(new Date()));
 				service.inocNumToday(new SimpleDateFormat("yyyy-MM-dd").format(df.parse(date)));
@@ -117,15 +117,12 @@ public class SubMenu {
 		
 		System.out.println("우선접종 대상자입니다.");
 		while(true) {
-			System.out.print("근처 예방접종 센터 정보를 조회하시겠습니까? (Y/N) : "); yn = sc.next();
-			if(yn.equals("Y")) {
+			if(util.getAnswer("근처 예방접종 센터 정보를 조회하시겠습니까?")) {
 				printCenter();
 				return;
-			} else if(yn.equals("N")) {
+			} else {
 				System.out.println("메인 메뉴로 돌아갑니다.");
 				return;
-			} else {
-				System.out.println("[오류] 입력 형식을 확인해주세요");
 			}
 		}
 	}
@@ -147,8 +144,7 @@ public class SubMenu {
 			System.out.println("3. 키워드로 조회");
 			System.out.println("0. 돌아가기");
 			
-			System.out.print("사용하실 메뉴 번호를 입력하세요 : ");
-			num = sc.nextInt();
+			num = util.inputNum("사용하실 메뉴 번호를 입력하세요");
 			switch(num) {
 			case 1:
 				ui.printSubSubMenu("전체 센터 조회");
@@ -198,18 +194,14 @@ public class SubMenu {
 		System.out.println(name + "님의 " + vacType + " 백신 2차 접종일은 " + tmp + " 입니다.");
 		System.out.println("2차 접종 알림 서비스에 가입하시면 2차 접종일 3일 전에 알림을 받으실 수 있습니다.");
 		while(true) {
-			System.out.print("서비스에 가입하시겠습니까?(Y/N) : "); yn = sc.next();
-			if(yn.equals("Y")) {
+			if(util.getAnswer("서비스에 가입하시겠습니까? ")) {
 				if(ms.addMember(name, vacType, dateFirst)) {
 					System.out.println("등록되었습니다.");
 				};
-				return;
-			} else if(yn.equals("N")) {
+			} else{
 				System.out.println("메인 메뉴로 돌아갑니다.");
 				return;
-			} else {
-				System.out.println("[오류] 입력 형식을 확인해주세요");
-			}
+			} 
 		}
 	}
 	
@@ -239,7 +231,7 @@ public class SubMenu {
 		ui.printSubSubMenu("회원 정보 확인");
 		
 		System.out.print("이름 : "); name = sc.next();
-		System.out.print("주민등록번호 : "); regiNum = sc.next();
+		regiNum = ms.inputRegiNum();
 		
 		return ms.verifyMember(name, regiNum);
 	}
@@ -263,8 +255,7 @@ public class SubMenu {
 			System.out.println("4. 알림 받기");
 			System.out.println("0. 돌아가기");
 			
-			System.out.print("사용하실 메뉴 번호를 입력하세요 : ");
-			num = sc.nextInt();
+			num = util.inputNum("사용하실 메뉴 번호를 입력하세요");
 			switch(num) {
 			case 1:
 				dto = isRegistered();
@@ -329,8 +320,7 @@ public class SubMenu {
 			System.out.println("2. 센터 관리");
 			System.out.println("0. 돌아가기");
 			
-			System.out.print("사용하실 메뉴 번호를 입력하세요 : ");
-			num = sc.nextInt();
+			num = util.inputNum("사용하실 메뉴 번호를 입력하세요");
 			switch(num) {
 			case 1:
 				manageMember();
@@ -366,8 +356,7 @@ public class SubMenu {
 			System.out.println("5. 회원 전체 삭제");
 			System.out.println("0. 돌아가기");
 		
-			System.out.print("사용하실 메뉴 번호를 입력하세요 : ");
-			num = sc.nextInt();
+			num = util.inputNum("사용하실 메뉴 번호를 입력하세요");
 			switch(num) {
 			case 1:
 				ui.printSubSubMenu("등록 회원 전체 조회");
@@ -417,8 +406,7 @@ public class SubMenu {
 			System.out.println("5. 센터 전체 삭제");
 			System.out.println("0. 돌아가기");
 		
-			System.out.print("사용하실 메뉴 번호를 입력하세요 : ");
-			num = sc.nextInt();
+			num = util.inputNum("사용하실 메뉴 번호를 입력하세요");
 			switch(num) {
 			case 1:
 				ui.printSubSubMenu("등록 센터 전체 조회");
@@ -426,7 +414,7 @@ public class SubMenu {
 				break;
 			case 2:
 				ui.printSubSubMenu("신규 센터 등록");
-				cs.addCenter();
+				if(cs.addCenter()) System.out.println("성공적으로 등록되었습니다.");
 				break;
 			case 3:
 				ui.printSubSubMenu("센터 정보 수정");

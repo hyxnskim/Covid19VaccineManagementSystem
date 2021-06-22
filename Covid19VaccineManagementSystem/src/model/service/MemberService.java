@@ -1,6 +1,4 @@
-/**
- * 
- */
+
 package model.service;
 
 import java.text.ParseException;
@@ -9,7 +7,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.Scanner;
 
-import model.dao.CenterDao;
 import model.dao.MemberDao;
 import model.dto.Member;
 import util.Utility;
@@ -28,6 +25,7 @@ public class MemberService {
 	private MemberDao dao = MemberDao.getInstance();
 	
 	Scanner sc = new Scanner(System.in);
+	Utility util = new Utility();
 	
 	/** 
 	 * <pre>
@@ -92,8 +90,6 @@ public class MemberService {
 	 * @return 성공시 백신 이름, 실패시 null
 	 */
 	public String inputVacType() {
-		//Scanner sc = new Scanner(System.in);
-		Utility util = new Utility();
 		String tmp;
 		boolean close = false;
 
@@ -198,17 +194,15 @@ public class MemberService {
 		}
 		System.out.println("\n---------------------------");
 		
-		boolean close = false;
-		while(!close) {
-			System.out.print("거주지역을 선택하세요 : ");  num = sc.nextInt();
+		while(true) {
+			num = util.inputNum("거주지역을 선택하세요");
 			if(num > 0 && num <= districts.size()) {
 				dto.setDistrict(districts.get(num - 1));
-				close = true;
+				break;
 			} else {
 				System.out.println("[오류] 1 ~ " + districts.size() + " 사이의 숫자를 입력하세요");
 			}
 		}
-		dto.setDistrict(districts.get(num - 1));
 		
 		return addMember(dto);
 	}
@@ -220,7 +214,6 @@ public class MemberService {
 	 * @return 입력받은 주민번호
 	 */
 	public String inputRegiNum() {
-		Utility util = new Utility();
 		int flag;
 		String tmp;
 		
@@ -327,7 +320,7 @@ public class MemberService {
 		String name, regiNum;
 		
 		System.out.print("이름 : "); name = sc.next();
-		System.out.print("\n주민번호 : "); regiNum = sc.next();
+		System.out.print("주민번호 : "); regiNum = sc.next();
 		
 		Member dto = null;
 		dto = verifyMember(name, regiNum);
@@ -393,13 +386,13 @@ public class MemberService {
 		String name, regiNum;
 		
 		System.out.print("이름 : "); name = sc.next();
-		System.out.print("\n주민번호 : "); regiNum = sc.next();
+		System.out.print("주민번호 : "); regiNum = sc.next();
 		
 		Member dto = null;
 		dto = verifyMember(name, regiNum);
 		
 		if(dto == null) {
-			System.out.println("\n이전 메뉴로 되돌아갑니다.");
+			System.out.println("이전 메뉴로 되돌아갑니다.");
 			return;
 		}
 		
@@ -422,7 +415,7 @@ public class MemberService {
 		System.out.println(dto);
 		
 		if(!util.getAnswer("위 회원정보를 수정하겠습니까?")) {
-			System.out.println("\n이전 메뉴로 되돌아갑니다.");
+			System.out.println("이전 메뉴로 되돌아갑니다.");
 		}
 		
 		System.out.println("-------------------");
@@ -432,13 +425,13 @@ public class MemberService {
 		System.out.println("4. 1차 접종일");
 		System.out.println("0. 돌아가기");
 		System.out.println("-------------------");
-		System.out.print("수정할 항목을 선택하세요 : "); num = sc.nextInt();
+		num = util.inputNum("수정할 항목을 선택하세요");
 		
 		while(true) {
 			switch(num){
 				case 1:
 					System.out.print("수정할 전화번호 : ");
-					dto.setContact(sc.next());
+					dto.setContact(inputContact());
 					if(dao.updateMember(dto))
 						System.out.println("수정되었습니다.");
 					return;
@@ -451,7 +444,7 @@ public class MemberService {
 					
 					boolean close = false;
 					while(!close) {
-						System.out.print("거주지역을 선택하세요 : ");  num = sc.nextInt();
+						num = util.inputNum("거주지역을 선택하세요");
 						if(num > 0 && num <= districts.size()) {
 							dto.setDistrict(districts.get(num - 1));
 							close = true;
@@ -469,8 +462,7 @@ public class MemberService {
 						System.out.println("수정되었습니다.");
 					return;
 				case 4:
-					System.out.print("1차 접종일 (형식 : 20210608) : ");
-					dto.setDateFirst(sc.next());
+					dto.setDateFirst(util.inputDate("1차 접종일 (형식 : 20210608)"));
 					
 					int period = findPeriod(dto.getVacType());
 					String date = util.addDate(dto.getDateFirst(), period);
