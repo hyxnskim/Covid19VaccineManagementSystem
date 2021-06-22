@@ -1,6 +1,9 @@
 
 package model.service;
 
+import java.io.BufferedReader;
+import java.io.FileInputStream;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.Scanner;
@@ -28,6 +31,9 @@ public class CenterService {
 	
 	/** 기본생성자 */
 	public CenterService() {
+		if(getCount() == 0) {
+			readFile();
+		}
 		setDistricts();
 	}
 	
@@ -81,6 +87,34 @@ public class CenterService {
 	 */
 	public boolean exist(Center dto) {
 		return exist(dto.getCenterName(), dto.getFacName());
+	}
+	
+	/**
+	 * <pre>
+	 * csv 파일로부터 자료를 읽어와 저장하기 위한 메서드
+	 * </pre>
+	 */
+	public void readFile() {
+		BufferedReader br = null;
+		String line;
+		String path = "./docs/centerInfo.csv";
+		try {
+			br = new BufferedReader(new InputStreamReader(new FileInputStream(path), "UTF-8"));
+			while((line = br.readLine()) != null) {
+				String[] temp = line.split(","); 
+
+				String contact = null;
+				if(temp.length > 5) {
+					contact = temp[5];
+				}
+
+				Center dto = new Center(temp[0], temp[1], temp[2], temp[3], temp[4], contact);
+				addCenter(dto);			
+			}
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+			e.printStackTrace();
+		}
 	}
 	
 	/**

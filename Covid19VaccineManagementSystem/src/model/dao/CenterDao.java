@@ -69,6 +69,7 @@ public class CenterDao {
 	public boolean insertCenterInfo(Center dto) {
 		Connection conn = null;
 		PreparedStatement stmt = null;
+		int rows = 0;
 		
 		try {
 			conn = factory.getConnection();
@@ -83,15 +84,16 @@ public class CenterDao {
 			stmt.setString(5, dto.getAddress());
 			stmt.setString(6, dto.getContact());
 
-			int rows = stmt.executeUpdate();
-			if(rows > 0) {
-				return true;
-			}
+			rows = stmt.executeUpdate();
+			
 		} catch (SQLException e) {
 			System.out.println("[오류] 센터 정보 추가");
 			e.printStackTrace();
 		} finally {
 			factory.close(conn, stmt);
+		}
+		if(rows > 0) {
+			return true;
 		}
 		return false;
 	}

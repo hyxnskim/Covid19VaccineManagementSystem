@@ -2,6 +2,7 @@ package model.dao;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -66,7 +67,7 @@ public class FactoryDao {
 	 * @param stmt
 	 * @param rs
 	 */
-	public void close(Connection conn, Statement stmt, ResultSet rs) {
+	public void close(Connection conn, PreparedStatement stmt, ResultSet rs) {
 		try {
 			if(rs != null) rs.close();
 		} catch (SQLException e) {
@@ -92,7 +93,7 @@ public class FactoryDao {
 	 * @param conn
 	 * @param stmt
 	 */
-	public void close(Connection conn, Statement stmt) {
+	public void close(Connection conn, PreparedStatement stmt) {
 		close(conn, stmt, null);
 	}
 }
