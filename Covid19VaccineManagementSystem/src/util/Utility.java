@@ -151,6 +151,32 @@ public class Utility {
 	
 	/**
 	 * <pre>
+	 * 오늘 날짜를 입력했을 경우 현재 시간이 10시 이전인지 이후인지 검사
+	 * -- REST API 문서가 매일 오전 9시 30분쯤 업데이트됨
+	 * -- 오차를 고려하여 10시 이전에는 어제 날짜, 10시 이후에는 오늘 날짜 반환
+	 * </pre>
+	 * @param date 입력 날짜
+	 * @return 10시 이전에는 어제 날짜, 10시 이후에는 오늘 날짜 반환
+	 * @throws ParseException
+	 */
+	public String todayBeforeTen(String date) throws ParseException {
+		SimpleDateFormat dfDay = new SimpleDateFormat("yyyyMMdd");
+		SimpleDateFormat dfHour = new SimpleDateFormat("HH");
+		
+		String currentDay = dfDay.format(new Date());
+		if(!date.equals(currentDay)) return date;
+		
+		String currentHour = dfHour.format(new Date());
+		if(Integer.parseInt(currentHour) < 10) {
+			System.out.println("오늘의 백신 접종 현황이 업데이트되지 않았습니다.\n어제 백신 접종 현황을 조회합니다.");
+			return addDate(date, -1);
+		} else {
+			return date;
+		}
+	}
+	
+	/**
+	 * <pre>
 	 * 천단위마다 ,표시한 문자열 반환하는 메서드
 	 * </pre>
 	 * @param num 기존 숫자

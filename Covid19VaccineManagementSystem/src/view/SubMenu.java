@@ -36,6 +36,7 @@ public class SubMenu {
 	 * @throws ParseException
 	 */
 	public void printCurrentVac() throws ParseException {
+		SimpleDateFormat df = new SimpleDateFormat("yyyyMMdd");
 		int num;
 
 		while(true) {
@@ -51,20 +52,11 @@ public class SubMenu {
 			switch(num) {
 			case 1:
 				ui.printSubSubMenu("오늘 현환 조회");
-				
-				SimpleDateFormat df = new SimpleDateFormat("HH");
-				String currentHour = df.format(new Date());
-				if(Integer.parseInt(currentHour) < 10) {
-					System.out.println("오늘의 백신 접종 현황이 업데이트되지 않았습니다.\n어제 백신 접종 현황을 조회합니다.");
-					
-					SimpleDateFormat df2 = new SimpleDateFormat("yyyyMMdd");
-					String tmp = util.addDate(df2.format(new Date()), -1);
-					Date dt = df2.parse(tmp); 
-					service.inocNumToday(new SimpleDateFormat("yyyy-MM-dd").format(dt));
-				} else {
-					service.inocNumToday(new SimpleDateFormat("yyyy-MM-dd").format(new Date()));
-				}
+
+				String date = util.todayBeforeTen(df.format(new Date()));
+				service.inocNumToday(new SimpleDateFormat("yyyy-MM-dd").format(df.parse(date)));
 				break;
+				
 			case 2:
 				String sdate, edate;
 				ui.printSubSubMenu("날짜별 검색");
@@ -77,7 +69,13 @@ public class SubMenu {
 				
 				while(true) {
 					edate = util.inputDate("종료일");
-					if(util.isDateInRange(edate)) break;
+					if(util.isDateInRange(edate)) {
+						if(!df.parse(sdate).after(df.parse(edate))) {
+							edate = util.todayBeforeTen(edate);
+							break;
+						}
+						else System.out.println("종료일은 시작일보다 작거나 같아야 합니다.");
+					}
 				}
 
 				String tmp;
